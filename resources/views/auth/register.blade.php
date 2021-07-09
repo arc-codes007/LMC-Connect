@@ -61,6 +61,19 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <label for="department" class="col-md-4 col-form-label text-md-right">{{ __('Select Department') }}</label>
+
+                            <div class="col-md-6">
+                                <select name="department" id="department" class="custom-select">
+                                    <option value="Department of Science">Department of Science</option>
+                                    <option value="Department of Pharmacy">Department of Pharmacy</option>
+                                    <option value="Department of Computer">Department of Computer</option>
+                                    <option value="Department of Management">Department of Management</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
