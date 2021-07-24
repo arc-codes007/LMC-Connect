@@ -17,3 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::middleware('auth:api')->get('/profile/get_course_year_details', [App\Http\Controllers\ProfileController::class, 'get_course_year_details'])->name('get_course_year_details');

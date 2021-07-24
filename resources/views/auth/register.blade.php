@@ -40,6 +40,20 @@
                         </div>
 
                         <div class="form-group row">
+                            <label for="username" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username">
+
+                                @error('username')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
                             <div class="col-md-6">
@@ -65,11 +79,11 @@
                             <label for="department" class="col-md-4 col-form-label text-md-right">{{ __('Select Department') }}</label>
 
                             <div class="col-md-6">
-                                <select name="department" id="department" class="custom-select">
-                                    <option value="Department of Science">Department of Science</option>
-                                    <option value="Department of Pharmacy">Department of Pharmacy</option>
-                                    <option value="Department of Computer">Department of Computer</option>
-                                    <option value="Department of Management">Department of Management</option>
+                                <select name="department" id="department" class="custom-select" required>
+                                    <option value="" disabled selected>Select Department</option>
+                                    @foreach (config('LMC.departments') as $department)
+                                        <option value="{{$department}}">{{$department}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>

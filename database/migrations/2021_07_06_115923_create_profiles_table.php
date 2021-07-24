@@ -17,9 +17,7 @@ class CreateProfilesTable extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->string('profile_pic')->nullable();
-            $table->string('contact_number')->nullable();
             $table->text('bio')->nullable();
-            $table->date('dob')->nullable();
             $table->string('course')->nullable();
             $table->string('year')->nullable();
             $table->jsonb('skillset')->nullable();

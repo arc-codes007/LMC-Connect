@@ -22,6 +22,14 @@ try {
 window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.$ = require('jquery');
+
+import 'select2';                       // globally assign select2 fn to $ element
+import 'select2/dist/css/select2.css';  // optional if you have css loader
+
+$(() => {
+  $('.select2-enable').select2();
+});
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

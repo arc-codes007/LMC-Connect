@@ -30,4 +30,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile');
 
-Route::get('/profile/create', [App\Http\Controllers\ProfileController::class, 'create'])->name('profile.create');
+Route::get('/profile/edit', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+
+Route::post('/profile/save', [App\Http\Controllers\ProfileController::class, 'save'])->name('profile.save');

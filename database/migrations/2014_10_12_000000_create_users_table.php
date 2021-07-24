@@ -17,9 +17,11 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('username')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('department', ['Department of Science', 'Department of Pharmacy', 'Department of Computer', 'Department of Management']);
+            $table->string('api_token', 80)->unique();
+            $table->string('department');
             $table->rememberToken();
             $table->softDeletesTz($column = 'deleted_at', $precision = 0);
             $table->timestamps();

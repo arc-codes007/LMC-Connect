@@ -3,7 +3,9 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-            <img src="{{ asset('images/profile_pics/'.$profile_details['profile_pic']) }}" alt="Profile Picture" class="img-thumbnail w-25 rounded-circle">
+        <div class="col-md-3">
+            <img src="{{(isset($profile_details['profile_pic']) && !empty($profile_details['profile_pic']))? asset('images/profile_pics/'.$username.'/'.$profile_details['profile_pic']) : asset('images/profile_pics/default-profile-pic.jpg')  }}" alt="Profile Picture" class="img-thumbnail w-100 rounded-circle">
+        </div>
     </div>
     <div class="row justify-content-center mt-4 h1">
         {{$name}}
