@@ -70,6 +70,7 @@ class ProfileController extends Controller
         $data = array(
             'name' => $logged_in_user_details['name'],
             'email' => $logged_in_user_details['email'],
+            'username' => $logged_in_user_details['username'],
             'department' => $logged_in_user_details['department'],
             'courses_available' => $courses_available
         ); 
