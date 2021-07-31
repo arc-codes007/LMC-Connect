@@ -37,21 +37,31 @@
             <div class="mt-3">
                 <div class="h5">Skills</div>
                 @if (empty($profile_details['skillset']))
-                    <div>N/A</div>
+                <div>N/A</div>
 
                 @else
-                    <div class="row row-cols-2">
-                        <ul>
-                            @foreach ($profile_details['skillset'] as $skill)
-                                <li class="col">{{$skill}}</li>
-                            @endforeach
-                        </ul>
-                    </div>
+                <div class="row row-cols-2">
+                    <ul>
+                        @foreach ($profile_details['skillset'] as $skill)
+                        <li class="col">{{$skill}}</li>
+                        @endforeach
+                    </ul>
+                </div>
                 @endif
             </div>
         </div>
         <div class="col-lg-6 text-center border">
             <div class="h2">Posts</div>
+            @foreach($posts_data as $_posts)
+            <div class="row">
+                <img src="{{asset('public/images/posted_images/'.$username.'/posts->post_image')}}" alt="post">
+            </div>
+            @endforeach
+            <div class="row justify-content-center mt-auto">
+                <a href="/posts/create" class="text-dark">
+                    <u><strong>Add New Post</strong></u>
+                </a>
+            </div>
         </div>
     </div>
 </div>

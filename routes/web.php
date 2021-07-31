@@ -14,12 +14,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    if(Auth::check())
-    {
+    if (Auth::check()) {
         return redirect()->route('home');
-    }
-    else
-    {
+    } else {
         return view('welcome');
     }
 });
@@ -27,6 +24,11 @@ Route::get('/', function () {
 Auth::routes(['verify' => true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// Route::get('/create', 'PostsController@create');
+Route::get('/posts/create', [App\Http\Controllers\PostsController::class, 'create'])->name('createpost');
+
+Route::post('/posts', [App\Http\Controllers\PostsController::class, 'store'])->name('storepost');
 
 Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile');
 
