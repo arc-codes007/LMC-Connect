@@ -20,3 +20,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::middleware('auth:api')->get('/profile/get_course_year_details', [App\Http\Controllers\ProfileController::class, 'get_course_year_details'])->name('get_course_year_details');
+
+Route::middleware('auth:api')->post('/social_access/create_request', [App\Http\Controllers\SocialAccessController::class, 'create_social_access_request'])->name('social_access.create_request');

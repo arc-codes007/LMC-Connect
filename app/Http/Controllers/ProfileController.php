@@ -7,6 +7,7 @@ use Auth;
 use App\Models\User;
 use Illuminate\Http\Response;
 use App\Models\Profile;
+use App\Models\SocialAccessRequests;
 class ProfileController extends Controller
 {
     //
@@ -35,11 +36,11 @@ class ProfileController extends Controller
             $profile_details = $logged_in_user->profile()->get()->all()[0]->getAttributes();
             if(!empty($profile_details['skillset']))
             {
-                $profile_details['skillset'] = json_decode($profile_details['skillset']);
+                $profile_details['skillset'] = json_decode($profile_details['skillset'], TRUE);
             }
             if(!empty($profile_details['social_links']))
             {
-                $profile_details['social_links'] = json_decode($profile_details['social_links']);
+                $profile_details['social_links'] = json_decode($profile_details['social_links'], TRUE);
             }
             $data['profile_details'] = $profile_details;
         }
@@ -79,17 +80,14 @@ class ProfileController extends Controller
 
         if(empty($logged_in_user->profile()->get()->all()))
         {
-            $profile_details['profile_pic'] = 'default-profile-pic.jpg';
+            $profile_details = array();
             $data['profile_details'] = $profile_details;
         }
         else
         {
             
             $profile_details = $logged_in_user->profile()->get()->all()[0]->getAttributes();
-            if(empty($profile_details['profile_pic']))
-            {
-                $profile_details['profile_pic'] = 'default-profile-pic.jpg';
-            }
+
             if(!empty($profile_details['skillset']))
             {
                 $profile_details['skillset'] = json_decode($profile_details['skillset'], TRUE);
@@ -267,5 +265,59 @@ class ProfileController extends Controller
         {
            return redirect(route('profile'));
         }
+    }
+
+    public function view_user($username)
+    {
+        $user = User::where('username',$username)->first();
+        if($user == null)
+        {
+            abort(404);
+        }
+
+        $user_details = $user->getAttributes();
+        $profile = $user->profile()->get()->all();
+
+        $data = array(
+            'name' => $user_details['name'],
+            'email' => $user_details['email'],
+            'username' => $user_details['username'],
+            'department' => $user_details['department'],
+        ); 
+        
+        $data['show_locked'] = true;
+
+        if(!empty($profile))
+        {
+            
+            $profile_details = $profile[0]->getAttributes();
+            if(!empty($profile_details['skillset']))
+            {
+                $profile_details['skillset'] = json_decode($profile_details['skillset'], TRUE);
+            }
+            if(!empty($profile_details['social_links']))
+            {
+                $profile_details['social_links'] = json_decode($profile_details['social_links'], TRUE);
+        
+                $logged_in_user_id = Auth::id();
+                $requested_to_id = $user_details['id'];
+                $social_access_request = SocialAccessRequests::where('requested_by_user_id',$logged_in_user_id)->where('requested_to_user_id',$requested_to_id)->first();
+                if($social_access_request != null)
+                {
+                    $social_access_request = $social_access_request->getAttributes();
+                    if($social_access_request['status'] == 'approved')
+                    {
+                        $data['show_locked'] = FALSE;
+                    }
+                    else if($social_access_request['status'] == 'pending')
+                    {
+                        $data['social_access_status'] = $social_access_request['status'];
+                    }
+                }
+            }
+            $data['profile_details'] = $profile_details;
+        }
+        
+        return view('profile.profile', $data);
     }
 }
