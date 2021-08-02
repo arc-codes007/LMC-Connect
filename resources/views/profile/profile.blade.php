@@ -24,23 +24,23 @@
             @endif
             @if (isset($profile_details['social_links']['facebook']) && !empty($profile_details['social_links']['facebook']))
                 @if(isset($profile_details['social_links']['facebook']['is_private']) && $profile_details['social_links']['facebook']['is_private'] == 0)
-                    <a href="{{$profile_details['social_links']['whatsapp']['value']}}" class="p-0 mx-3 btn"><i class="text-success fab fa-2x fa-facebook mt-1"></i></a>
+                    <a href="{{$profile_details['social_links']['whatsapp']['value']}}" class="p-0 mx-3 btn"><i class="text-primary fab fa-2x fa-facebook mt-1"></i></a>
                 @else
-                    <span data-toggle="tooltip" data-placement="top" title="Disabled! Request Access to use."><a href="#" class="p-0 mx-3 btn disabled"><i class="text-success fab fa-2x fa-facebook mt-1"></i></a></span>
+                    <span data-toggle="tooltip" data-placement="top" title="Disabled! Request Access to use."><a href="#" class="p-0 mx-3 btn disabled"><i class="text-primary fab fa-2x fa-facebook mt-1"></i></a></span>
                 @endif
             @endif
             @if (isset($profile_details['social_links']['instagram']) && !empty($profile_details['social_links']['instagram']))
                 @if(isset($profile_details['social_links']['instagram']['is_private']) && $profile_details['social_links']['instagram']['is_private'] == 0)
-                    <a href="{{$profile_details['social_links']['instagram']['value']}}" class="p-0 mx-3 btn"><i class="text-success fab fa-2x fa-instagram mt-1"></i></a>
+                    <a href="{{$profile_details['social_links']['instagram']['value']}}" class="p-0 mx-3 btn"><i class="instagram-icon-color fab fa-2x fa-instagram mt-1"></i></a>
                 @else
-                    <span data-toggle="tooltip" data-placement="top" title="Disabled! Request Access to use."><a href="#" class="p-0 mx-3 btn disabled"><i class="text-success fab fa-2x fa-instagram mt-1"></i></a></span>
+                    <span data-toggle="tooltip" data-placement="top" title="Disabled! Request Access to use."><a href="#" class="p-0 mx-3 btn disabled"><i class="instagram-icon-color fab fa-2x fa-instagram mt-1"></i></a></span>
                 @endif
             @endif
             @if (isset($profile_details['social_links']['linkedin']) && !empty($profile_details['social_links']['linkedin']))
                 @if(isset($profile_details['social_links']['linkedin']['is_private']) && $profile_details['social_links']['linkedin']['is_private'] == 0)
-                    <a href="{{$profile_details['social_links']['linkedin']['value']}}" class="p-0 mx-3 btn"><i class="text-success fab fa-2x fa-linkedin mt-1"></i></a>
+                    <a href="{{$profile_details['social_links']['linkedin']['value']}}" class="p-0 mx-3 btn"><i class="text-primary fab fa-2x fa-linkedin mt-1"></i></a>
                 @else
-                    <span data-toggle="tooltip" data-placement="top" title="Disabled! Request Access to use."><a href="#" class="btn disabled"><i class="text-success fab fa-2x fa-linkedin mt-1"></i></a></span>
+                    <span data-toggle="tooltip" data-placement="top" title="Disabled! Request Access to use."><a href="#" class="btn disabled"><i class="text-primary fab fa-2x fa-linkedin mt-1"></i></a></span>
                 @endif
             @endif
             @if($profile_details['social_links']['whatsapp']['is_private'] == 1 || $profile_details['social_links']['facebook']['is_private'] == 1 || $profile_details['social_links']['instagram']['is_private'] == 1 || $profile_details['social_links']['linkedin']['is_private'] == 1)
@@ -59,25 +59,25 @@
                 <span data-toggle="tooltip" data-placement="top" title="Complete your profile!"><a href="#" class="p-0 mx-3 btn disabled"><i class="text-success fab fa-2x fa-whatsapp mt-1"></i></a></span>
             @endif
             @if (isset($profile_details['social_links']['facebook']) && !empty($profile_details['social_links']['facebook']))
-                <a href="{{$profile_details['social_links']['facebook']['value']}}" class="p-0 mx-3 btn"><i class="text-success fab fa-2x fa-facebook mt-1"></i></a>
+                <a href="{{$profile_details['social_links']['facebook']['value']}}" class="p-0 mx-3 btn"><i class="text-primary fab fa-2x fa-facebook mt-1"></i></a>
             @elseif (isset($show_locked) && $show_locked == FALSE)
             
             @else
-                <span data-toggle="tooltip" data-placement="top" title="Complete your profile!"><a href="#" class="p-0 mx-3 btn disabled"><i class="text-success fab fa-2x fa-facebook mt-1"></i></a></span>
+                <span data-toggle="tooltip" data-placement="top" title="Complete your profile!"><a href="#" class="p-0 mx-3 btn disabled"><i class="text-primary fab fa-2x fa-facebook mt-1"></i></a></span>
             @endif
             @if (isset($profile_details['social_links']['instagram']) && !empty($profile_details['social_links']['instagram']))
-                <a href="{{$profile_details['social_links']['instagram']['value']}}" class="p-0 mx-3 btn"><i class="text-success fab fa-2x fa-instagram mt-1"></i></a>
+                <a href="{{$profile_details['social_links']['instagram']['value']}}" class="p-0 mx-3 btn"><i class="instagram-icon-color fab fa-2x fa-instagram mt-1"></i></a>
             @elseif (isset($show_locked) && $show_locked == FALSE)
             
             @else
-                <span data-toggle="tooltip" data-placement="top" title="Complete your profile!"><a href="#" class="p-0 mx-3 btn disabled"><i class="text-success fab fa-2x fa-instagram mt-1"></i></a></span>
+                <span data-toggle="tooltip" data-placement="top" title="Complete your profile!"><a href="#" class="p-0 mx-3 btn disabled"><i class="instagram-icon-color fab fa-2x fa-instagram mt-1"></i></a></span>
             @endif
             @if (isset($profile_details['social_links']['linkedin']) && !empty($profile_details['social_links']['linkedin']))
-                <a href="{{$profile_details['social_links']['linkedin']['value']}}" class="p-0 mx-3 btn"><i class="text-success fab fa-2x fa-linkedin mt-1"></i></a>
+                <a href="{{$profile_details['social_links']['linkedin']['value']}}" class="p-0 mx-3 btn"><i class="text-primary fab fa-2x fa-linkedin mt-1"></i></a>
             @elseif (isset($show_locked) && $show_locked == FALSE)
             
             @else
-                <span data-toggle="tooltip" data-placement="top" title="Complete your profile!"><a href="#" class="p-0 mx-3 btn disabled"><i class="text-success fab fa-2x fa-linkedin mt-1"></i></a></span>
+                <span data-toggle="tooltip" data-placement="top" title="Complete your profile!"><a href="#" class="p-0 mx-3 btn disabled"><i class="text-primary fab fa-2x fa-linkedin mt-1"></i></a></span>
             @endif
         @endif
     </div>
@@ -118,6 +118,8 @@
     </div>
 </div>
 
+@if (isset($profile_details['social_links']) && !empty($profile_details['social_links']))
+
 @if(($profile_details['social_links']['whatsapp']['is_private'] == 1 || $profile_details['social_links']['facebook']['is_private'] == 1 || $profile_details['social_links']['instagram']['is_private'] == 1 || $profile_details['social_links']['linkedin']['is_private'] == 1) && isset($show_locked) && $show_locked == true)
 <script>
 $(document).ready(function(){
@@ -151,6 +153,8 @@ $(document).ready(function(){
 });
 </script>
 @endif
+@endif
+
 
 
 @endsection
