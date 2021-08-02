@@ -49,45 +49,53 @@ class PostsController extends Controller
         $logged_in_user = Auth::user();
         $logged_in_user_details = $logged_in_user->getAttributes();
 
-        $extension = $request->post_image->extension();
+
 
         $post_imageName = '';
-        if (isset($post_data['post_image']) && !empty($post_data['post_image'])) {
+        if (isset($post_data['post_pic']) && !empty($post_data['post_pic'])) {
             if (!is_dir('images/posted_images/' . $logged_in_user_details['username'])) {
                 mkdir('images/posted_images/' . $logged_in_user_details['username']);
             }
             $folderPath = public_path('images/posted_images/' . $logged_in_user_details['username'] . '/');
 
-            $post_image_data = $post_data['post_image'];
-            $post_imageName = uniqid() . '_' . $logged_in_user_details['username'] . '.' . $extension;
+            $image_parts = explode(";base64,", $post_data['post_pic']);
+            $image_type_aux = explode("image/", $image_parts[0]);
+            $image_type = $image_type_aux[1];
+            $image_base64 = base64_decode($image_parts[1]);
+
+            $post_imageName = uniqid() . '_' . $logged_in_user_details['username'] . '.' . $image_type;
 
             $imageFullPath = $folderPath . $post_imageName;
 
-            file_put_contents($imageFullPath, $post_image_data);
+            file_put_contents($imageFullPath, $image_base64);
         }
 
 
-        $posts = Posts::where('user_id', $logged_in_user_details['id']);
-        if ($posts == null) {
-            $posts = new Posts;
+        // $posts = Posts::where('user_id', $logged_in_user_details['id']);
+        // dd($posts);
+        // if ($posts == null) {
+        $posts = new Posts;
 
-            $posts->user_id = $logged_in_user_details['id'];
+        $posts->user_id = $logged_in_user_details['id'];
 
-            if ($post_imageName != '') {
-                $posts->post_image = $post_imageName;
-            }
-            if ($post_data['title'] != null) {
-                $posts->title = $post_data['title'];
-            }
-            if ($post_data['description'] != null) {
-                $posts->description = $post_data['description'];
-            }
+        if ($post_imageName != '') {
+            $posts->post_image = $post_imageName;
         }
+        if ($post_data['title'] != null) {
+            $posts->title = $post_data['title'];
+        }
+        if ($post_data['description'] != null) {
+            $posts->description = $post_data['description'];
+        }
+        // }
 
         if ($posts->save()) {
             return redirect('/profile');
         }
     }
+
+
+
 
 
 

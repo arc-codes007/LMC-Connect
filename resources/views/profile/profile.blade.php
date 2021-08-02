@@ -52,9 +52,11 @@
         </div>
         <div class="col-lg-6 text-center border">
             <div class="h2">Posts</div>
-            @foreach($posts_data as $_posts)
+            @foreach($posts_data as $posts)
             <div class="row">
-                <img src="{{asset('public/images/posted_images/'.$username.'/posts->post_image')}}" alt="post">
+                <a href="/posts/edit">
+                    <img src="{{ asset('images/posted_images/'.$username.'/'.$posts['post_image']) }}" alt="Somethimg went Wrong!">
+                </a>
             </div>
             @endforeach
             <div class="row justify-content-center mt-auto">
