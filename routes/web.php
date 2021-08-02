@@ -25,13 +25,16 @@ Auth::routes(['verify' => true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-// Route::get('/create', 'PostsController@create');
 Route::get('/posts/create', [App\Http\Controllers\PostsController::class, 'create'])->name('createpost');
 
 Route::post('/posts', [App\Http\Controllers\PostsController::class, 'store'])->name('storepost');
+//Profile Routes
 
 Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile');
 
 Route::get('/profile/edit', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
 
+Route::get('/profile/{username}', [App\Http\Controllers\ProfileController::class, 'view_user'])->name('profile.view_user');
+
 Route::post('/profile/save', [App\Http\Controllers\ProfileController::class, 'save'])->name('profile.save');
+
