@@ -27,7 +27,11 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('/posts/create', [App\Http\Controllers\PostsController::class, 'create'])->name('createpost');
 
+Route::get('/posts/edit/{random_id}', [App\Http\Controllers\PostsController::class, 'edit'])->name('editpost');
+
 Route::post('/posts', [App\Http\Controllers\PostsController::class, 'store'])->name('storepost');
+
+Route::post('/editposts/{random_id}', [App\Http\Controllers\PostsController::class, 'storeedit'])->name('storeeditpost');
 //Profile Routes
 
 Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile');
@@ -37,4 +41,3 @@ Route::get('/profile/edit', [App\Http\Controllers\ProfileController::class, 'edi
 Route::get('/profile/{username}', [App\Http\Controllers\ProfileController::class, 'view_user'])->name('profile.view_user');
 
 Route::post('/profile/save', [App\Http\Controllers\ProfileController::class, 'save'])->name('profile.save');
-

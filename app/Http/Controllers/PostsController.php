@@ -19,15 +19,6 @@ class PostsController extends Controller
         $this->middleware('verified');
     }
 
-    // public function index()
-    // {
-    //     $users = auth()->user()->following()->pluck('profiles.user_id');
-
-    //     $posts = Post::whereIn('user_id', $users)->with('user')->latest()->paginate(5);
-
-    //     return view('posts.index', compact('posts'));
-    // }
-
     public function create()
     {
         return view('posts.create');
@@ -36,14 +27,44 @@ class PostsController extends Controller
 
 
 
-    public function store(Request $request)
+    public function storeedit(Request $request, $id)
     {
         // Validate the request...
+        if (isset($id) && !empty($id)) {
+
+            $request->validate([
+                'title' => 'required',
+                'description' => '',
+            ]);
+
+            $post_data = $request->all();
+
+            $posts = Posts::where('random_id', $id)->first();
+            if ($post_data['title'] != null) {
+                $posts->title = $post_data['title'];
+            }
+            if ($post_data['description'] != null) {
+                $posts->description = $post_data['description'];
+            }
+        }
+
+        if ($posts->save()) {
+            return redirect('/profile');
+        }
+    }
+
+
+
+
+    public function store(Request $request)
+    {
         $request->validate([
             'title' => 'required',
             'post_image' => ['required', 'image'],
             'description' => '',
         ]);
+
+
 
         $post_data = $request->all();
         $logged_in_user = Auth::user();
@@ -71,9 +92,11 @@ class PostsController extends Controller
         }
 
 
-        // $posts = Posts::where('user_id', $logged_in_user_details['id']);
-        // dd($posts);
-        // if ($posts == null) {
+
+        $permitchar = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $random_id =  substr(str_shuffle($permitchar), 0, 6);
+
+
         $posts = new Posts;
 
         $posts->user_id = $logged_in_user_details['id'];
@@ -87,7 +110,10 @@ class PostsController extends Controller
         if ($post_data['description'] != null) {
             $posts->description = $post_data['description'];
         }
-        // }
+        if ($random_id != ' ') {
+            $posts->random_id = $random_id;
+        }
+
 
         if ($posts->save()) {
             return redirect('/profile');
@@ -97,6 +123,17 @@ class PostsController extends Controller
 
 
 
+    public function edit($id)
+    {
+
+
+        if (isset($id) && !empty($id)) {
+            $data = Posts::where('random_id', $id)->first();
+            $editdata = $data->getAttributes();
+            // dd($editdata);
+            return view('posts.edit_posts', $editdata);
+        }
+    }
 
 
 
