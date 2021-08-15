@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Posts;
-use App\Models\Users;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 use Auth;
@@ -129,17 +129,9 @@ class PostsController extends Controller
 
         if (isset($id) && !empty($id)) {
             $data = Posts::where('random_id', $id)->first();
-            $editdata = $data->getAttributes();
-            // dd($editdata);
-            return view('posts.edit_posts', $editdata);
+            $username = User::find($data->user_id)->username;
+            // $editdata = $data->getAttributes();
+            return view('posts.edit_posts', ['data' => $data, 'username' => $username]);
         }
     }
-
-
-
-
-    // public function show(\App\Post $post)
-    // {
-    //     return view('posts.show', compact('post'));
-    // }
 }
