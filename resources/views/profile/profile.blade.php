@@ -120,7 +120,7 @@
 
 @if (isset($profile_details['social_links']) && !empty($profile_details['social_links']))
 
-@if(((isset($profile_details['social_links']['whatsapp']) && $profile_details['social_links']['whatsapp']['is_private'] == 1) || (isset($profile_details['social_links']['facebook']) &&& $profile_details['social_links']['facebook']['is_private'] == 1) || (isset($profile_details['social_links']['instagram']) && $profile_details['social_links']['instagram']['is_private'] == 1) || (isset($profile_details['social_links']['linkedin']) && $profile_details['social_links']['linkedin']['is_private'] == 1)) && isset($show_locked) && $show_locked == true)
+@if(((isset($profile_details['social_links']['whatsapp']) && $profile_details['social_links']['whatsapp']['is_private'] == 1) || (isset($profile_details['social_links']['facebook']) && $profile_details['social_links']['facebook']['is_private'] == 1) || (isset($profile_details['social_links']['instagram']) && $profile_details['social_links']['instagram']['is_private'] == 1) || (isset($profile_details['social_links']['linkedin']) && $profile_details['social_links']['linkedin']['is_private'] == 1)) && isset($show_locked) && $show_locked == true)
 <script>
 $(document).ready(function(){
 
