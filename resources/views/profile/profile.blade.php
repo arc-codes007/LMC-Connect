@@ -136,6 +136,40 @@
     </div>
 </div>
 
+@if (isset($profile_details['social_links']) && !empty($profile_details['social_links']))
+
+@if(((isset($profile_details['social_links']['whatsapp']) && $profile_details['social_links']['whatsapp']['is_private'] == 1) || (isset($profile_details['social_links']['facebook']) &&& $profile_details['social_links']['facebook']['is_private'] == 1) || (isset($profile_details['social_links']['instagram']) && $profile_details['social_links']['instagram']['is_private'] == 1) || (isset($profile_details['social_links']['linkedin']) && $profile_details['social_links']['linkedin']['is_private'] == 1)) && isset($show_locked) && $show_locked == true)
+<script>
+    $(document).ready(function() {
+
+        $('#request_access').click(function(e) {
+            e.preventDefault();
+            $('#request_access').addClass('disabled');
+            var username = JSON.parse('{!! json_encode($username) !!}');
+
+            $.ajax({
+                url: "{{ route('social_access.create_request') }}",
+                type: "POST",
+                data: {
+                    username: username
+                },
+                success: function(res_data) {
+                    console.log('her');
+                    $('#request_access').html('Pending Approval');
+                },
+                error: function(res_data) {
+                    console.log(res_data);
+                    if (res_data.responseJSON.type == 'custom')
+                        alertify.alert('Error', res_data.responseJSON.message);
+                    else
+                        alertify.alert('Error', 'Something Went Wrong!');
+                }
+            });
+        });
+    });
+</script>
+@endif
+@endif
 
 
 
