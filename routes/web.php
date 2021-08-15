@@ -41,3 +41,5 @@ Route::get('/profile/edit', [App\Http\Controllers\ProfileController::class, 'edi
 Route::get('/profile/{username}', [App\Http\Controllers\ProfileController::class, 'view_user'])->name('profile.view_user');
 
 Route::post('/profile/save', [App\Http\Controllers\ProfileController::class, 'save'])->name('profile.save');
+
+Route::get('/posts/view/{post_id}', [App\Http\Controllers\PostViewController::class, 'view'])->name('post.show');
