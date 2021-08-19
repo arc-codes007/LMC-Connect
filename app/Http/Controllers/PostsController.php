@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Posts;
 use App\Models\User;
+use App\Models\Comments;
 use Illuminate\Http\Request;
 
 use Auth;
@@ -34,6 +35,7 @@ class PostsController extends Controller
 
             $request->validate([
                 'title' => 'required',
+                'random_id' => 'required',
                 'description' => '',
             ]);
 
@@ -121,7 +123,42 @@ class PostsController extends Controller
     }
 
 
+    public function viewpost($post_random_id)
+    {
 
+        $post = Posts::where('random_id', '=', $post_random_id)->first();
+        $postdata = $post->getAttributes();
+        $username = User::find($post->user_id)->username;
+        $comment = Comments::where('user_id', '=', $postdata['user_id'])->where('post_id', '=', $postdata['id'])->get();
+        $commentcount = $comment->count('comment');
+        // $commentuser = User::where('id', $comment->user_id)->value('username');
+        // dd($commentuser);
+        return view('posts.view_post', ['post' => $post, 'username' => $username, 'comment' => $comment, 'commentcount' => $commentcount]);
+        exit();
+    }
+
+    public function storecomment(Request $request)
+    {
+        $request->validate([
+            'comment' => 'required',
+            'random_id' => 'required',
+        ]);
+
+        $data = $request->all();
+        // dd($data);
+        $post = Posts::where('random_id', $data['random_id'])->first();
+        $storecom = $post->getAttributes();
+        $comment = new Comments;
+        $comment->post_id = $storecom['id'];
+        $comment->user_id = $storecom['user_id'];
+        if ($data['comment'] != null) {
+            $comment->comment = $data['comment'];
+        }
+        // dd($comment);
+        if ($comment->save()) {
+            return redirect('/posts/view/' . $data['random_id']);
+        }
+    }
 
     public function edit($id)
     {

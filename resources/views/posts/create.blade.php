@@ -12,7 +12,7 @@
                     <h1>Add New Post</h1>
                 </div>
                 <div class="form-group row">
-                    <label for="title" class="col-md-4 col-form-label">Post Caption</label>
+                    <label for="title" class="col-md-4 col-form-label">Post Title</label>
 
                     <input id="title" type="text" class="form-control{{ $errors->has('title') ? ' is-invalid' : '' }}" name="title" value="{{ old('title') }}" autocomplete="title" autofocus>
 

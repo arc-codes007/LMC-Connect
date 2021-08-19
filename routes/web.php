@@ -31,6 +31,8 @@ Route::get('/posts/edit/{random_id}', [App\Http\Controllers\PostsController::cla
 
 Route::post('/posts', [App\Http\Controllers\PostsController::class, 'store'])->name('storepost');
 
+Route::post('/posts/comments', [App\Http\Controllers\PostsController::class, 'storecomment'])->name('storecomment');
+
 Route::post('/editposts/{random_id}', [App\Http\Controllers\PostsController::class, 'storeedit'])->name('storeeditpost');
 //Profile Routes
 
@@ -42,4 +44,4 @@ Route::get('/profile/{username}', [App\Http\Controllers\ProfileController::class
 
 Route::post('/profile/save', [App\Http\Controllers\ProfileController::class, 'save'])->name('profile.save');
 
-Route::get('/posts/view/{post_id}', [App\Http\Controllers\PostViewController::class, 'view'])->name('post.show');
+Route::get('/posts/view/{post_id}', [App\Http\Controllers\PostsController::class, 'viewpost'])->name('post.show');

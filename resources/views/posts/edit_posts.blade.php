@@ -3,8 +3,9 @@
 @section('content')
 
 <div class="container">
-    <form action="/editposts/{{ $data->random_id }}" enctype="multipart/form-data" method="post">
+    <form action="/editposts" enctype="multipart/form-data" method="post">
         @csrf
+        <input type="hidden" name="random_id" value="{{$data->random_id}}">
         <div class="m-auto col-6-lg">
             <div class="form-group">
                 <div class="h5">Title</div>
