@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container">
-    <form action="/editposts" enctype="multipart/form-data" method="post">
+    <form action="{{route('storeeditpost',[$data->random_id])}}" enctype="multipart/form-data" method="post">
         @csrf
         <input type="hidden" name="random_id" value="{{$data->random_id}}">
         <div class="m-auto col-6-lg">
