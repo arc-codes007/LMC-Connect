@@ -45,3 +45,5 @@ Route::get('/profile/{username}', [App\Http\Controllers\ProfileController::class
 Route::post('/profile/save', [App\Http\Controllers\ProfileController::class, 'save'])->name('profile.save');
 
 Route::get('/posts/view/{post_id}', [App\Http\Controllers\PostsController::class, 'viewpost'])->name('post.show');
+
+Route::post('/posts/view/', [App\Http\Controllers\ResumeUploadController::class, 'store'])->name('storeresume');
