@@ -47,6 +47,11 @@ class CommentsController extends Controller
             $comment_data[$key]['username'] = $username;
         }
 
-            return (new Response($comment_data,200));
+        $return_data = array(
+            'comment_count' => Comments::where('post_id', '=', $get_data['post_id'])->count(),
+            'comment_data' => $comment_data
+        );
+
+        return (new Response($return_data,200));
     }
 }

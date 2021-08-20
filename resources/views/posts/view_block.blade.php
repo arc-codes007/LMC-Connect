@@ -17,8 +17,6 @@
            </div>
         </div>
             <!-- Add Comment -->
-            <div class="m2-5">
-              {{-- <h5 class="card-header">Add Comment</h5> --}}
               <div class="card-body" id="add_comment" style="display:none">
                   <form method="post" action="/posts/comments">
                       @csrf
@@ -27,17 +25,16 @@
                       <input type="hidden" name="post_id" id="post_id" value="{{$post->id}}">
                       <input type="submit" class="btn btn-dark mt-2" />
                   </form>
-              </div>
-          </div>     
-          {{-- showing comments        --}}
+              
+          
+                  {{-- showing comments        --}}
 
-          <button class="btn btn-primary mx-4" type="button" id="view_comments">View Comments</button>
-          <button class="btn btn-primary mx-4" type="button" id="hide_comments" style="display: none;">Hide Comments</button>
-        <div class="collapse show mx-4 py-2" id="comment_accordion">
+                 <button class="btn btn-primary my-4" type="button" id="view_comments">View Comments</button>
+                 <button class="btn btn-primary my-4" type="button" id="hide_comments" style="display: none;">Hide Comments</button>
+                    <div class="collapse my-4" id="comment_accordion">
 
-        </div>
-        <button type="button" class="btn btn-primary" id="view_more_comments" style="display:none">View More Comments</button>
-
+                    </div>
+             </div>
           
       </div>
     </div>    
@@ -46,14 +43,14 @@
 <script>
     $(document).ready(function(){
         $('#comment_button').click(function(){
-            $('#add_comment').show();
+            $('#add_comment').toggle();
         });
 
 
 
 
          $('#view_comments').click(function(){
-            // console.log('hello');
+            $('#comment_accordion').html('');
             $('#comment_accordion').collapse('show');
             $('#view_comments').hide();
             $('#view_more_comments').show();
@@ -65,15 +62,15 @@
                     count: 5,
                 },
                 success: function(res_data) {
-                    console.log(res_data);
-                    for(let comment of res_data)
+                    for(let comment of res_data.comment_data)
                     {
-                        console.log(comment);
                         $('#comment_accordion').append(`<div><strong>${comment.username} :</strong> ${comment.comment}</div><hr>`);                        
                     }
 
-                    // $('#comment_accordion').append(`<a class="btn btn-primary" id="view_more_comments">View More</a>`);                        
-                            
+                    if(res_data.comment_count > 5)
+                    {
+                        $('#comment_accordion').append(`<a class="btn btn-primary" onclick="view_all_comments()">View More</a>`);                        
+                    }       
                 },
                 error: function(res_data) {
                     $('#comment_accordion').html(`No Comments! Be first to comment.`);                        
@@ -83,7 +80,19 @@
             });
 
 
-         $('#view_more_comments').click(function(){
+            $('#hide_comments').click(function(){
+                $('#view_comments').show();
+                $('#hide_comments').hide();
+                $('#comment_accordion').collapse('hide');
+            });
+
+    });
+    
+
+    
+
+    function view_all_comments()
+    {
             // console.log('hello');
             $('#view_more_comments').hide();
             $('#comment_accordion').html('');
@@ -97,10 +106,9 @@
                     post_id: $('#post_id').val(),
                 },
                 success: function(res_data) {
-                    console.log(res_data);
-                    for(let comment of res_data)
+
+                    for(let comment of res_data.comment_data)
                     {
-                        console.log(comment);
                         $('#comment_accordion').append(`<div><strong>${comment.username} :</strong> ${comment.comment}</div><hr>`);                        
                     }
 
@@ -111,31 +119,7 @@
                 }
             });
 
-            });
-
-            $('#hide_comments').click(function(){
-                $('#comment_accordion').hide();
-                $('#view_comments').show();
-                $('#hide_comments').hide();
-            });
-
-    });
-    
-    // var acc = document.getElementsByClassName("accordion");
-    // var i;
-
-    //  for (i = 0; i < acc.length; i++) {
-    //    acc[i].addEventListener("click", function() {
-    //    console.log('hello');
-    //    this.classList.toggle("active");
-    //    var panel = this.nextElementSibling;
-    //    if (panel.style.display === "block") {
-    //     panel.style.display = "none";
-    //   } else {
-    //    panel.style.display = "block";
-    //    }
-    //   });
-    // }    
+            }
     
     </script>
 
