@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Models\User;
 use App\Models\SocialAccessRequests;
+use App\Models\Notifications;
 use Illuminate\Http\Response;
+use Illuminate\Notifications\Notification;
 
 class SocialAccessController extends Controller
 {
@@ -47,7 +49,18 @@ class SocialAccessController extends Controller
 
         if($social_access_request->save())
         {
-            return (new Response('Success', 201));
+            $notification = new Notifications;
+
+            $notification->user_id = $requested_to_id;
+            $notification->type = 'social_access_request';
+            $notification_data = array(
+                'title' => 'Social Links Access Request',
+                'requested_by' => $logged_in_user_id,
+            );
+            $notification->details = json_encode($notification_data);
+
+            if($notification->save())
+                return (new Response('Success', 201));
         }
     }
 }

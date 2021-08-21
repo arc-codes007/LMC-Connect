@@ -36,7 +36,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
+        <nav class="navbar fixed-top navbar-expand-md navbar-dark bg-dark shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name') }}
@@ -96,7 +96,7 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="py-4 mt-5">
             @yield('content')
         </main>
     </div>
