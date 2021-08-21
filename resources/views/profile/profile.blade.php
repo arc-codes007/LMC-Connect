@@ -43,7 +43,7 @@
                     <span data-toggle="tooltip" data-placement="top" title="Disabled! Request Access to use."><a href="#" class="btn disabled"><i class="text-primary fab fa-2x fa-linkedin mt-1"></i></a></span>
                 @endif
             @endif
-            @if($profile_details['social_links']['whatsapp']['is_private'] == 1 || $profile_details['social_links']['facebook']['is_private'] == 1 || $profile_details['social_links']['instagram']['is_private'] == 1 || $profile_details['social_links']['linkedin']['is_private'] == 1)
+            @if((isset($profile_details['social_links']['whatsapp']) &&$profile_details['social_links']['whatsapp']['is_private'] == 1) || (isset($profile_details['social_links']['facebook']) && $profile_details['social_links']['facebook']['is_private'] == 1) || (isset($profile_details['social_links']['instagram']) && $profile_details['social_links']['instagram']['is_private'] == 1) || (isset($profile_details['social_links']['linkedin']) && $profile_details['social_links']['linkedin']['is_private'] == 1))
                 @if(isset($social_access_status) && $social_access_status == 'pending')
                     <a class="btn btn-secondary disabled">Pending Approval</a>                    
                 @else
