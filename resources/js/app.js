@@ -59,7 +59,7 @@ $(function () {
         selector: ".tiny",
         // height: 300,
         menubar: false,
-        inline: true,
+        inline: false,
         plugins: [
             'advlist autolink lists link image charmap print preview anchor',
             'searchreplace visualblocks code fullscreen',
