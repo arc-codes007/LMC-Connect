@@ -103,7 +103,7 @@ class PostsController extends Controller
 
         $posts->user_id = $logged_in_user_details['id'];
         $posts->department = $logged_in_user_details['department'];
-
+        
         if ($post_imageName != '') {
             $posts->post_image = $post_imageName;
         }
@@ -130,12 +130,7 @@ class PostsController extends Controller
         $post = Posts::where('random_id', '=', $post_random_id)->first();
         $postdata = $post->getAttributes();
         $username = User::find($post->user_id)->username;
-        $comment = Comments::where('user_id', '=', $postdata['user_id'])->where('post_id', '=', $postdata['id'])->get();
-        $commentcount = $comment->count('comment');
-        // $commentuser = User::where('id', $comment->user_id)->value('username');
-        // dd($commentuser);
-        return view('posts.view_post', ['post' => $post, 'username' => $username, 'comment' => $comment, 'commentcount' => $commentcount]);
-        exit();
+        return view('posts.view_post', ['post' => $post, 'username' => $username]);        
     }
 
     public function storecomment(Request $request)
