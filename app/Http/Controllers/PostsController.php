@@ -22,7 +22,7 @@ class PostsController extends Controller
 
     public function create()
     {
-        return view('posts.create');
+        return view('posts.create_edit_posts');
     }
 
 
@@ -168,7 +168,7 @@ class PostsController extends Controller
             $data = Posts::where('random_id', $id)->first();
             $username = User::find($data->user_id)->username;
             // $editdata = $data->getAttributes();
-            return view('posts.edit_posts', ['data' => $data, 'username' => $username]);
+            return view('posts.create_edit_posts', ['data' => $data, 'username' => $username]);
         }
     }
 }
