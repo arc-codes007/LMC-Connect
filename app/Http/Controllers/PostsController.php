@@ -102,6 +102,7 @@ class PostsController extends Controller
         $posts = new Posts;
 
         $posts->user_id = $logged_in_user_details['id'];
+        $posts->department = $logged_in_user_details['department'];
 
         if ($post_imageName != '') {
             $posts->post_image = $post_imageName;

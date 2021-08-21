@@ -77,7 +77,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <label>{{}}</label>
+          <input type="text" value="{{ url('posts/view/'.$post->random_id) }}">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

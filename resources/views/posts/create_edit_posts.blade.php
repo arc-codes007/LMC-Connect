@@ -15,11 +15,22 @@
 
                 <div class="col-8 offset-2">
 
+                    @if(isset($data) && isset($data->random_id))    
                         <div class="row">
                           <h2>Edit Post</h2>
                         </div>
+                        @else 
+                            <div class="row">
+                             <h2>Create post</h2>    
+                            </div>
+                        
 
-                        {{-- @if(isset($data->random_id) &&!empty($data->random_id)) --}}
+                     @endif
+                  
+
+
+
+                        {{-- // @if(isset($data->random_id) &&!empty($data->random_id)) --}}
                         
                             <div class="form-group row">
                              <div class="h5">Post Title</div>
