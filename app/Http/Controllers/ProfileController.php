@@ -288,6 +288,13 @@ class ProfileController extends Controller
             }
             $data['profile_details'] = $profile_details;
         }
+
+        if (empty($user->posts()->get()->all())) {
+            $data['posts_details'] = array();
+        } else {
+            $posts_details = $user->posts()->get()->all();
+            $data['posts_data'] = $posts_details;
+        }
         
         return view('profile.profile', $data);
     }

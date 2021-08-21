@@ -114,9 +114,11 @@
         </div>
         <div class="col-lg-6 text-center border">
             <div class="h2">Posts
-                <a href="{{ route('createpost') }}" class="text-success" data-toggle="tooltip" data-placement="top" title="Add Post">
-                    <i class="fas fa-sm fa-plus-circle mt-1"></i>
-                </a>
+                @if(!isset($show_locked))
+                    <a href="{{ route('createpost') }}" class="text-success" data-toggle="tooltip" data-placement="top" title="Add Post">
+                        <i class="fas fa-sm fa-plus-circle mt-1"></i>
+                    </a>
+                @endif
             </div>
             <div class="row">
                 @if(isset($posts_data) && !empty($posts_data))
