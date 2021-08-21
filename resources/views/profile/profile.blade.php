@@ -99,39 +99,21 @@
             <div class="mt-3">
                 <div class="h5">Skills</div>
                 @if (empty($profile_details['skillset']))
-                <div>N/A</div>
+                    <div>N/A</div>
 
                 @else
-                <div class="row row-cols-2">
-                    <ul>
-                        @foreach ($profile_details['skillset'] as $skill)
-                        <li class="col">{{$skill}}</li>
-                        @endforeach
-                    </ul>
-                </div>
+                    <div class="row row-cols-2">
+                        <ul>
+                            @foreach ($profile_details['skillset'] as $skill)
+                                <li class="col">{{$skill}}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                 @endif
             </div>
         </div>
         <div class="col-lg-6 text-center border">
             <div class="h2">Posts</div>
-            <div class="row">
-                @if(isset($posts_data) && !empty($posts_data))
-                @foreach($posts_data as $posts)
-                <!-- @if(isset($posts) && !empty($posts)) -->
-                <div class=" col-4 pb-4 m-auto">
-                    <a href="{{ url('posts/view/'.$posts->random_id) }}">
-                        <img class="card-img" src="{{ asset('images/posted_images/'.$username.'/'.$posts['post_image']) }}" alt="Somethimg went Wrong!">
-                    </a>
-                </div>
-                <!-- @endif -->
-                @endforeach
-                @endif
-            </div>
-            <div class="row justify-content-center mt-auto">
-                <a href="/posts/create" class="text-dark">
-                    <u><strong>Add New Post</strong></u>
-                </a>
-            </div>
         </div>
     </div>
 </div>
@@ -140,33 +122,35 @@
 
 @if(((isset($profile_details['social_links']['whatsapp']) && $profile_details['social_links']['whatsapp']['is_private'] == 1) || (isset($profile_details['social_links']['facebook']) && $profile_details['social_links']['facebook']['is_private'] == 1) || (isset($profile_details['social_links']['instagram']) && $profile_details['social_links']['instagram']['is_private'] == 1) || (isset($profile_details['social_links']['linkedin']) && $profile_details['social_links']['linkedin']['is_private'] == 1)) && isset($show_locked) && $show_locked == true)
 <script>
-    $(document).ready(function() {
+$(document).ready(function(){
 
-        $('#request_access').click(function(e) {
-            e.preventDefault();
-            $('#request_access').addClass('disabled');
-            var username = JSON.parse('{!! json_encode($username) !!}');
+    $('#request_access').click(function(e){
+        e.preventDefault();
+        $('#request_access').addClass('disabled');
+        var username = JSON.parse('{!! json_encode($username) !!}');
 
-            $.ajax({
-                url: "{{ route('social_access.create_request') }}",
-                type: "POST",
-                data: {
-                    username: username
-                },
-                success: function(res_data) {
-                    console.log('her');
-                    $('#request_access').html('Pending Approval');
-                },
-                error: function(res_data) {
-                    console.log(res_data);
-                    if (res_data.responseJSON.type == 'custom')
-                        alertify.alert('Error', res_data.responseJSON.message);
-                    else
-                        alertify.alert('Error', 'Something Went Wrong!');
-                }
-            });
+        $.ajax({
+            url : "{{ route('social_access.create_request') }}",
+            type: "POST",
+            data : {
+                username : username
+            },
+            success: function(res_data)
+            {
+                console.log('her');
+                $('#request_access').html('Pending Approval');
+            },
+            error: function (res_data)
+            {   
+                console.log(res_data);
+                if(res_data.responseJSON.type == 'custom')
+                alertify.alert('Error', res_data.responseJSON.message);
+                else
+                alertify.alert('Error', 'Something Went Wrong!');
+            }
         });
     });
+});
 </script>
 @endif
 @endif
