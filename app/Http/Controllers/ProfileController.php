@@ -9,6 +9,7 @@ use App\Models\Posts;
 use Illuminate\Http\Response;
 use App\Models\Profile;
 use App\Models\SocialAccessRequests;
+
 class ProfileController extends Controller
 {
     //
@@ -232,6 +233,13 @@ class ProfileController extends Controller
 
     public function view_user($username)
     {
+        $logged_in_user_username = Auth::user()->username;
+
+        if($logged_in_user_username == $username)
+        {
+           return redirect(route('profile'));
+        }
+
         $user = User::where('username',$username)->first();
         if($user == null)
         {
@@ -279,6 +287,13 @@ class ProfileController extends Controller
                 }
             }
             $data['profile_details'] = $profile_details;
+        }
+
+        if (empty($user->posts()->get()->all())) {
+            $data['posts_details'] = array();
+        } else {
+            $posts_details = $user->posts()->get()->all();
+            $data['posts_data'] = $posts_details;
         }
         
         return view('profile.profile', $data);

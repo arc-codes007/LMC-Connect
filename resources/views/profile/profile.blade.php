@@ -43,7 +43,7 @@
                     <span data-toggle="tooltip" data-placement="top" title="Disabled! Request Access to use."><a href="#" class="btn disabled"><i class="text-primary fab fa-2x fa-linkedin mt-1"></i></a></span>
                 @endif
             @endif
-            @if($profile_details['social_links']['whatsapp']['is_private'] == 1 || $profile_details['social_links']['facebook']['is_private'] == 1 || $profile_details['social_links']['instagram']['is_private'] == 1 || $profile_details['social_links']['linkedin']['is_private'] == 1)
+            @if((isset($profile_details['social_links']['whatsapp']) &&$profile_details['social_links']['whatsapp']['is_private'] == 1) || (isset($profile_details['social_links']['facebook']) && $profile_details['social_links']['facebook']['is_private'] == 1) || (isset($profile_details['social_links']['instagram']) && $profile_details['social_links']['instagram']['is_private'] == 1) || (isset($profile_details['social_links']['linkedin']) && $profile_details['social_links']['linkedin']['is_private'] == 1))
                 @if(isset($social_access_status) && $social_access_status == 'pending')
                     <a class="btn btn-secondary disabled">Pending Approval</a>                    
                 @else
@@ -113,18 +113,25 @@
             </div>
         </div>
         <div class="col-lg-6 text-center border">
-            <div class="h2">Posts</div>
-            @foreach($posts_data as $posts)
-            <div class="row">
-                <a href="/posts/edit">
-                    <img src="{{ asset('images/posted_images/'.$username.'/'.$posts['post_image']) }}" alt="Somethimg went Wrong!">
-                </a>
+            <div class="h2">Posts
+                @if(!isset($show_locked))
+                    <a href="{{ route('createpost') }}" class="text-success" data-toggle="tooltip" data-placement="top" title="Add Post">
+                        <i class="fas fa-sm fa-plus-circle mt-1"></i>
+                    </a>
+                @endif
             </div>
-            @endforeach
-            <div class="row justify-content-center mt-auto">
-                <a href="/posts/create" class="text-dark">
-                    <u><strong>Add New Post</strong></u>
-                </a>
+            <div class="row">
+                @if(isset($posts_data) && !empty($posts_data))
+                @foreach($posts_data as $posts)
+                <!-- @if(isset($posts) && !empty($posts)) -->
+                <div class=" col-4 pb-4 m-auto">
+                    <a href="{{ url('posts/view/'.$posts->random_id) }}">
+                        <img class="card-img" src="{{ asset('images/posted_images/'.$username.'/'.$posts['post_image']) }}" alt="Somethimg went Wrong!">
+                    </a>
+                </div>
+                <!-- @endif -->
+                @endforeach
+                @endif
             </div>
         </div>
     </div>
@@ -134,35 +141,33 @@
 
 @if(((isset($profile_details['social_links']['whatsapp']) && $profile_details['social_links']['whatsapp']['is_private'] == 1) || (isset($profile_details['social_links']['facebook']) && $profile_details['social_links']['facebook']['is_private'] == 1) || (isset($profile_details['social_links']['instagram']) && $profile_details['social_links']['instagram']['is_private'] == 1) || (isset($profile_details['social_links']['linkedin']) && $profile_details['social_links']['linkedin']['is_private'] == 1)) && isset($show_locked) && $show_locked == true)
 <script>
-$(document).ready(function(){
+    $(document).ready(function() {
 
-    $('#request_access').click(function(e){
-        e.preventDefault();
-        $('#request_access').addClass('disabled');
-        var username = JSON.parse('{!! json_encode($username) !!}');
+        $('#request_access').click(function(e) {
+            e.preventDefault();
+            $('#request_access').addClass('disabled');
+            var username = JSON.parse('{!! json_encode($username) !!}');
 
-        $.ajax({
-            url : "{{ route('social_access.create_request') }}",
-            type: "POST",
-            data : {
-                username : username
-            },
-            success: function(res_data)
-            {
-                console.log('her');
-                $('#request_access').html('Pending Approval');
-            },
-            error: function (res_data)
-            {   
-                console.log(res_data);
-                if(res_data.responseJSON.type == 'custom')
-                alertify.alert('Error', res_data.responseJSON.message);
-                else
-                alertify.alert('Error', 'Something Went Wrong!');
-            }
+            $.ajax({
+                url: "{{ route('social_access.create_request') }}",
+                type: "POST",
+                data: {
+                    username: username
+                },
+                success: function(res_data) {
+                    console.log('her');
+                    $('#request_access').html('Pending Approval');
+                },
+                error: function(res_data) {
+                    console.log(res_data);
+                    if (res_data.responseJSON.type == 'custom')
+                        alertify.alert('Error', res_data.responseJSON.message);
+                    else
+                        alertify.alert('Error', 'Something Went Wrong!');
+                }
+            });
         });
     });
-});
 </script>
 @endif
 @endif

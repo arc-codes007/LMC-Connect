@@ -27,7 +27,13 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('/posts/create', [App\Http\Controllers\PostsController::class, 'create'])->name('createpost');
 
+Route::get('/posts/edit/{random_id}', [App\Http\Controllers\PostsController::class, 'edit'])->name('editpost');
+
 Route::post('/posts', [App\Http\Controllers\PostsController::class, 'store'])->name('storepost');
+
+Route::post('/posts/comments', [App\Http\Controllers\PostsController::class, 'storecomment'])->name('storecomment');
+
+Route::post('/editposts/{random_id}', [App\Http\Controllers\PostsController::class, 'storeedit'])->name('storeeditpost');
 //Profile Routes
 
 Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile');
@@ -38,3 +44,6 @@ Route::get('/profile/{username}', [App\Http\Controllers\ProfileController::class
 
 Route::post('/profile/save', [App\Http\Controllers\ProfileController::class, 'save'])->name('profile.save');
 
+Route::get('/posts/view/{post_id}', [App\Http\Controllers\PostsController::class, 'viewpost'])->name('post.show');
+
+Route::post('/posts/view/', [App\Http\Controllers\ResumeUploadController::class, 'store'])->name('storeresume');

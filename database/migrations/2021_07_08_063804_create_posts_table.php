@@ -16,6 +16,7 @@ class CreatePostsTable extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
+            $table->string('random_id');
             $table->string('post_image')->nullable();
             $table->string('title')->nullable();
             $table->text('description')->nullable();
@@ -24,6 +25,8 @@ class CreatePostsTable extends Migration
             $table->timestamps();
         });
     }
+
+
 
     /**
      * Reverse the migrations.
