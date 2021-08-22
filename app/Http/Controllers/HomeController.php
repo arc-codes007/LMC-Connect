@@ -8,6 +8,8 @@ use App\Models\Profile;
 use App\Models\Notifications;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Response;
+
 
 class HomeController extends Controller
 {
@@ -44,12 +46,28 @@ class HomeController extends Controller
             {
                 $notifications[$key] = $notification->getAttributes();
                 $notifications[$key]['details'] = json_decode($notifications[$key]['details'],TRUE);
-                $notifications[$key]['details']['requested_by'] = User::find($notifications[$key]['details']['requested_by'])->username;
+                $notifications[$key]['details']['requested_by_username'] = User::find($notifications[$key]['details']['requested_by'])->username;
             }
+
+            $data['notifications'] = $notifications;
         }
 
-        $data['notifications'] = $notifications;
 
         return view('home.main', $data);
+    }
+
+    public function get_posts(Request $request)
+    {        
+        $user = Auth::user();
+
+        $posts = Posts::where('department',$user->department)->get()->all();
+        $post_html_array = array();
+        foreach($posts as $post)
+        {
+            $username = User::find($post->user_id)->username;
+            $post_html_array[] = view('posts.view_block', ['post' => $post, 'username' => $username])->renderSections()['post'];        
+        }
+
+        return (new response($post_html_array,200));
     }
 }

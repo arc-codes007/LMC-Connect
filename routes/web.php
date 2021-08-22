@@ -23,6 +23,7 @@ Route::get('/', function () {
 
 Auth::routes(['verify' => true]);
 
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/posts/create', [App\Http\Controllers\PostsController::class, 'create'])->name('createpost');
@@ -30,8 +31,6 @@ Route::get('/posts/create', [App\Http\Controllers\PostsController::class, 'creat
 Route::get('/posts/edit/{random_id}', [App\Http\Controllers\PostsController::class, 'edit'])->name('editpost');
 
 Route::post('/posts', [App\Http\Controllers\PostsController::class, 'store'])->name('storepost');
-
-Route::post('/posts/comments', [App\Http\Controllers\PostsController::class, 'storecomment'])->name('storecomment');
 
 Route::post('/editposts/{random_id}', [App\Http\Controllers\PostsController::class, 'storeedit'])->name('storeeditpost');
 //Profile Routes
@@ -47,3 +46,12 @@ Route::post('/profile/save', [App\Http\Controllers\ProfileController::class, 'sa
 Route::get('/posts/view/{post_id}', [App\Http\Controllers\PostsController::class, 'viewpost'])->name('post.show');
 
 Route::post('/posts/view/', [App\Http\Controllers\ResumeUploadController::class, 'store'])->name('storeresume');
+
+Route::get('/account/edit/{username}', [App\Http\Controllers\Auth\UpdateUserController::class, 'show_update_account_form'])->name('show_update_account_form');
+
+Route::post('/account/update', [App\Http\Controllers\Auth\UpdateUserController::class, 'update_account'])->name('update_account');
+
+
+// Route::get('/account/edit/{username}', function ($username) {
+//     dd("sadawsd");
+// })->name('show_update_account_form');

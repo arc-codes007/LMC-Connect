@@ -26,11 +26,11 @@ class CommentsController extends Controller
 
         if (isset($get_data['count']) && !empty($get_data['count'])) 
         {
-            $comment_collection = Comments::where('post_id', '=', $get_data['post_id'])->take($get_data['count'])->get();
+            $comment_collection = Comments::where('post_id', '=', $get_data['post_id'])->take($get_data['count'])->orderBy('updated_at','DESC')->get();
         }
         else 
         {
-            $comment_collection = Comments::where('post_id', '=', $get_data['post_id'])->get();
+            $comment_collection = Comments::where('post_id', '=', $get_data['post_id'])->orderBy('updated_at','DESC')->get();
         }
 
         if($comment_collection->count() == 0)

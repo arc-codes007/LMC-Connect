@@ -9,6 +9,8 @@ use App\Models\Comments;
 use Illuminate\Http\Request;
 
 use Auth;
+use Session;
+use URL;
 use Illuminate\Http\Response;
 
 
@@ -22,6 +24,8 @@ class PostsController extends Controller
 
     public function create()
     {
+        Session::put('requestReferrer', URL::previous());
+
         return view('posts.create_edit_posts');
     }
 
@@ -51,7 +55,7 @@ class PostsController extends Controller
         }
 
         if ($posts->save()) {
-            return redirect('/profile');
+            return redirect(Session::get('requestReferrer'));
         }
     }
 
@@ -119,7 +123,7 @@ class PostsController extends Controller
 
 
         if ($posts->save()) {
-            return redirect('/profile');
+            return redirect(Session::get('requestReferrer'));
         }
     }
 
@@ -141,18 +145,25 @@ class PostsController extends Controller
         ]);
 
         $data = $request->all();
-        // dd($data);
+        
         $post = Posts::where('random_id', $data['random_id'])->first();
+        if($post == null)
+        {
+            return (new response('Something went wrong',404));
+        }
+
         $storecom = $post->getAttributes();
         $comment = new Comments;
         $comment->post_id = $storecom['id'];
         $comment->user_id = $storecom['user_id'];
-        if ($data['comment'] != null) {
+        if ($data['comment'] != null) 
+        {
             $comment->comment = $data['comment'];
         }
-        // dd($comment);
-        if ($comment->save()) {
-            return redirect('/posts/view/' . $data['random_id']);
+
+        if ($comment->save()) 
+        {
+            return (new response('Success',201));
         }
     }
 

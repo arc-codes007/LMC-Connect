@@ -4,52 +4,150 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-lg-3 sticky-top border rounded py-3"> 
-            <div class="row justify-content-center my-4">
-                <img src="{{(isset($profile_details->profile_pic) && !empty($profile_details->profile_pic))? asset('images/profile_pics/'.$username.'/'.$profile_details->profile_pic) : asset('images/profile_pics/default-profile-pic.jpg')  }}" alt="Profile Picture" class="img-thumbnail w-75 rounded-circle">
-            </div>
-            <div class="row justify-content-center mt-4 h1">
-                {{$name}}
-            </div>
-            <div class="h4 mt-3">Bio</div>
-            <div>{{(isset($profile_details->bio) && !empty($profile_details->bio))? $profile_details->bio : 'N/A' }}</div>
-            <hr>
-            <div>
-                <a href="" class="btn btn-primary">Saved Items</a>
+        <div class="col-lg-3">
+            <div class="sticky-top">
+                <div class="border rounded  py-3 px-2"> 
+                    <div class="row justify-content-center my-4">
+                        <img src="{{(isset($profile_details->profile_pic) && !empty($profile_details->profile_pic))? asset('images/profile_pics/'.$username.'/'.$profile_details->profile_pic) : asset('images/profile_pics/default-profile-pic.jpg')  }}" alt="Profile Picture" class="img-thumbnail w-75 rounded-circle">
+                    </div>
+                    <div class="row justify-content-center mt-4 h1">
+                        {{$name}}
+                    </div>
+                    <div class="h4 mt-3">Bio</div>
+                    <div>{{(isset($profile_details->bio) && !empty($profile_details->bio))? $profile_details->bio : 'N/A' }}</div>
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <a href="" class="btn btn-primary">Saved Items</a>
+                        <a href="{{ route('createpost') }}" class="btn btn-success">Add New Post</a>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-6" id="post_container">
             
         </div>
-        <div class="col-lg-3 sticky-top border rounded py-3">
-            <div class="h2">Notifications</div>
-            <hr>
-            <div class="mt-2">
-                @if (isset($notifications) && !empty($notifications))
-                @foreach ($notifications as $notification)
-                @switch($notification['type'])
-                    @case('social_access_request')
-                        <div class="alert alert-primary" role="alert">
-                            <h4 class="alert-heading h5">{{$notification['details']['title']}}</h4>
-                            
-                            <hr>
-                            <div>User <a href="{{url('/profile/'.$notification['details']['requested_by'])}}">{{$notification['details']['requested_by']}}</a> wants to access your social links!</div>
-                            <hr>
-                            <div class="mb-0">
-                                <a href="" class="btn btn-sm btn-success">Accept</a>
-                                <a href="" class="btn btn-sm btn-secondary">Decline</a>
-                            </div>
-                        </div>
-                        @break
-                
-                    @default
+        <div class="col-lg-3">
+            <div class="sticky-top">
+                <div class="border rounded  py-3 px-2"> 
+                    <div class="h2">Notifications</div>
+                    <hr>
+                    <div class="mt-2">
+                        @if (isset($notifications) && !empty($notifications))
+                        @foreach ($notifications as $notification)
+                        @switch($notification['type'])
+                            @case('social_access_request')
+                                <div class="alert alert-primary" role="alert">
+                                    <h4 class="alert-heading h5">{{$notification['details']['title']}}</h4>
+                                    
+                                    <hr>
+                                    <div>User <a href="{{url('/profile/'.$notification['details']['requested_by_username'])}}">{{$notification['details']['requested_by_username']}}</a> wants to access your social links!</div>
+                                    <hr>
+                                    <div class="mb-0">
+                                        <a class="btn btn-sm btn-success accept_social_request" data-notification_id = {{$notification['id']}} data-requested_by = {{$notification['details']['requested_by']}} data-requested_to = {{$notification['user_id']}}>Accept</a>
+                                        <a href="" class="btn btn-sm btn-secondary decline_social_request" data-notification_id = {{$notification['id']}} data-requested_by = {{$notification['details']['requested_by']}} data-requested_to = {{$notification['user_id']}}>Decline</a>
+                                    </div>
+                                </div>
+                                @break
                         
-                @endswitch
-                @endforeach
-                @endif
+                            @default
+                                
+                        @endswitch
+                        @endforeach
+                        @else
+                        <div>No new notifications!</div>
+                        @endif
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
+<script>
+
+$(document).ready(function(){
+
+    $(window).scroll(function(){
+        var height = $(window).scrollTop();
+        if(height > 95)
+        {
+            $('.sticky-top').css('padding-top','5rem');
+        }
+        else
+        {
+            $('.sticky-top').css('padding-top','0rem');
+
+        }
+});
+    
+    $.ajax({
+        url: "{{ route('home.get_posts') }}",
+        type: "GET",
+        data: {
+        },
+        success: function(res_data) {
+            for(let post of res_data)
+            {
+                $('#post_container').append(post);
+            }
+            console.log(res_data);
+        },
+        error: function(res_data) {
+            alertify.alert('Error', 'Something Went Wrong!');
+        }
+    });
+
+    $('.accept_social_request').click(function(){
+        var requested_by = $(this).data('requested_by');
+        var requested_to = $(this).data('requested_to');
+        var notification_id = $(this).data('notification_id');
+
+        var this_element = this;
+
+        $.ajax({
+                url: "{{ route('social_access.accept_decline_request') }}",
+                type: "POST",
+                data: {
+                    requested_by: requested_by,
+                    requested_to: requested_to,
+                    notification_id: notification_id,
+                    type : 'accept'
+                },
+                success: function(res_data) {
+                    $(this_element).parent().parent().fadeOut();
+                },
+                error: function(res_data) {
+                    alertify.alert('Error', 'Something Went Wrong!');
+                }
+            });
+    });
+
+    $('.decline_social_request').click(function(){
+        var requested_by = $(this).data('requested_by');
+        var requested_to = $(this).data('requested_to');
+        var notification_id = $(this).data('notification_id');
+
+        var this_element = this;
+
+        $.ajax({
+                url: "{{ route('social_access.accept_decline_request') }}",
+                type: "POST",
+                data: {
+                    requested_by: requested_by,
+                    requested_to: requested_to,
+                    notification_id: notification_id,
+                    type : 'decline'
+                },
+                success: function(res_data) {
+                    $(this_element).parent().parent().fadeOut();
+                },
+                error: function(res_data) {
+                    alertify.alert('Error', 'Something Went Wrong!');
+                }
+            });
+    });
+
+});
+
+</script>
 @endsection

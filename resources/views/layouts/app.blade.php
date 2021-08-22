@@ -79,6 +79,9 @@
                                     <a class="dropdown-item" href="{{ route('profile.edit') }}">
                                         {{ __('Edit Profile') }}
                                     </a>
+                                    <a class="dropdown-item" href="{{ route('show_update_account_form',Auth::user()->username) }}">
+                                        {{ __('Account Settings') }}
+                                    </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -101,8 +104,96 @@
         </main>
     </div>
 
+<script src="{{ asset('js/main.js') }}"></script>
+
 <script>
 
+
+function add_comment(post_id)
+{
+
+    var form_data = $(`#${post_id}_add_comment_form`).serializeArray();
+    var data = {};
+    for(let value of form_data)
+    {
+        data[value['name']] = value['value'];
+    }
+
+    $.ajax({
+        url: "{{route('storecomment')}}",
+        type: "POST",
+        data:data,
+        success: function(res_data) {
+            $(`#${post_id}_add_comment_form`).children('[name="comment"]').val('');
+            view_comments(post_id);
+        },
+        error: function(res_data) {
+            console.log(res_data);
+                alertify.alert('Error', 'Something Went Wrong!');
+        }
+    });
+}
+
+
+
+function view_comments(post_id)
+{
+    $(`#${post_id}_comment_accordion`).html('');
+    $(`#${post_id}_comment_accordion`).collapse('show');
+    $(`#${post_id}_view_comments_btn`).hide();
+
+    $.ajax({
+        url: "{{ route('get_comments') }}",
+        type: "GET",
+        data: {
+            post_id: post_id,
+            count: 5,
+        },
+        success: function(res_data) {
+            for(let comment of res_data.comment_data)
+            {
+                $(`#${post_id}_comment_accordion`).append(`<div><strong>${comment.username} :</strong> ${comment.comment}</div><hr>`);                        
+            }
+
+            if(res_data.comment_count > 5)
+            {
+                $(`#${post_id}_comment_accordion`).append(`<a class="btn btn-primary" onclick="view_all_comments(${post_id})">View More</a>`);                        
+            }       
+        },
+        error: function(res_data) {
+            $(`#${post_id}_comment_accordion`).html(`No Comments! Be first to comment.`);                        
+        }
+    });
+
+}
+
+function view_all_comments(post_id)
+{
+    $(`#${post_id}_comment_accordion`).html('');
+    $(`#${post_id}_comment_accordion`).collapse('show');
+    $(`#${post_id}_hide_comments_btn`).show();
+
+    $.ajax({
+        url: "{{ route('get_comments') }}",
+        type: "GET",
+        data: {
+            post_id: post_id,
+        },
+        success: function(res_data) {
+
+            for(let comment of res_data.comment_data)
+            {
+                $(`#${post_id}_comment_accordion`).append(`<div><strong>${comment.username} :</strong> ${comment.comment}</div><hr>`);                        
+            }
+
+                    
+        },
+        error: function(res_data) {
+            $(`#${post_id}_comment_accordion`).html(`No Comments! Be first to comment.`);                        
+        }
+    });
+
+}
 
 </script>
 </body>
