@@ -53,7 +53,8 @@ Route::get('/account/edit/{username}', [App\Http\Controllers\Auth\UpdateUserCont
 
 Route::post('/account/update', [App\Http\Controllers\Auth\UpdateUserController::class, 'update_account'])->name('update_account');
 
+Route::post('/account/delete', [App\Http\Controllers\Auth\UpdateUserController::class, 'delete_account'])->name('delete_account');
 
-// Route::get('/account/edit/{username}', function ($username) {
+// Route::post('/account/delete', function () {
 //     dd("sadawsd");
-// })->name('show_update_account_form');
+// })->name('delete_account');
