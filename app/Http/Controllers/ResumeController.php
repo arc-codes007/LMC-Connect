@@ -10,9 +10,9 @@ use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Http\Response;
 
-class ResumeUploadController extends Controller
+class ResumeController extends Controller
 {
-    public function store(Request $request)
+    public function upload(Request $request)
     {
         $request->validate([
             'post_id' => 'required|exists:posts,id',
@@ -39,8 +39,10 @@ class ResumeUploadController extends Controller
             
 
             $resumePath = $folderPath . $resume_name;
+
+            $resume_file->storeAs('resumes', $resume_name);
              
-            file_put_contents($resumePath,$resume_name);
+            // file_put_contents($resumePath,$resume_name);
             
             $resume = new resume;
 
@@ -54,14 +56,21 @@ class ResumeUploadController extends Controller
             }  
             if ($resume->save())
             {
-                return back();
+                $download_resume = true;
+                return back(['download'=>$download_resume ,'resume_name'=>$resume_name]);
+                             
             }
             
             
         }       
        
     } 
-        
+    public function download()
+    {
+        return response()->download(storage_path('app/resumes/6120db541fa31_yoyo_resume.pdf'));       
+        //   return response()->download(storage_path("app/upload/{$file}"));
+            // view("files.download", compact('$download'));        
+    }              
   
     
 }

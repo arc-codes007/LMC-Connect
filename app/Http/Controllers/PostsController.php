@@ -128,6 +128,7 @@ class PostsController extends Controller
 
         $post = Posts::where('random_id', '=', $post_random_id)->first();
         $postdata = $post->getAttributes();
+        $showresume = $post['show_send_resume_button'];
         $username = User::find($post->user_id)->username;
         $comment = Comments::where('user_id', '=', $postdata['user_id'])->where('post_id', '=', $postdata['id'])->get();
         $commentcount = $comment->count('comment');
