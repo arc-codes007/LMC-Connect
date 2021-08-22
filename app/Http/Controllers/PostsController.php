@@ -46,6 +46,14 @@ class PostsController extends Controller
             $post_data = $request->all();
 
             $posts = Posts::where('random_id', $id)->first();
+
+            if( isset($post_data['show_send_resume_button']) && !empty($post_data['show_send_resume_button']) && $post_data['show_send_resume_button'] = 'on'){
+                $posts->show_send_resume_button = 1;
+            }
+            elseif($post_data['show_send_resume_button'] = 'off'){
+                $posts->show_send_resume_button = 0;
+            }
+            
             if ($post_data['title'] != null) {
                 $posts->title = $post_data['title'];
             }
@@ -107,6 +115,14 @@ class PostsController extends Controller
 
         $posts->user_id = $logged_in_user_details['id'];
         $posts->department = $logged_in_user_details['department'];
+
+        if(isset($post_data['show_send_resume_button']) && !empty($post_data['show_send_resume_button']) && $post_data['show_send_resume_button'] = 'on'){
+            $posts->show_send_resume_button = 1;
+        }
+        elseif($post_data['show_send_resume_button'] = 'off'){
+            $posts->show_send_resume_button = 0;
+        }
+        
         
         if ($post_imageName != '') {
             $posts->post_image = $post_imageName;
@@ -120,7 +136,7 @@ class PostsController extends Controller
         if ($random_id != ' ') {
             $posts->random_id = $random_id;
         }
-
+        
 
         if ($posts->save()) {
             return redirect(Session::get('requestReferrer'));
@@ -133,6 +149,7 @@ class PostsController extends Controller
 
         $post = Posts::where('random_id', '=', $post_random_id)->first();
         $postdata = $post->getAttributes();
+        $showresume = $post['show_send_resume_button'];
         $username = User::find($post->user_id)->username;
         return view('posts.view_post', ['post' => $post, 'username' => $username]);        
     }
@@ -174,7 +191,6 @@ class PostsController extends Controller
         if (isset($id) && !empty($id)) {
             $data = Posts::where('random_id', $id)->first();
             $username = User::find($data->user_id)->username;
-            // $editdata = $data->getAttributes();
             return view('posts.create_edit_posts', ['data' => $data, 'username' => $username]);
         }
     }

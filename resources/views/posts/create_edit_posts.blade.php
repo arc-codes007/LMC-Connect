@@ -11,7 +11,7 @@
             @if (isset($data) && isset($data->random_id))
                 <input type="hidden" name="random_id" value="{{$data->random_id}}">                
             @endif
-            <div class="row">
+            <div class="card-body">
 
                 <div class="col-8 offset-2">
 
@@ -49,10 +49,11 @@
                             </div>
                            
                             @else
-                            <div class="form-group col-md-3">
+                            <div class="h5 row">Post Image</div>
+                            <div class="form-group col-md-4">
                                 <div id="upload-demo" class="edit_posts_image" style="display: none;"></div>
                                 <div id="preview-crop-image" class="img_container">
-                                    <a id='edit_posts_image' class="text-dark button w-100 h-100 text-center"><i class="fas fa-3x fa-camera"></i></a>
+                                    <a id='edit_posts_image' class="text-dark button w-100 h-100 text-center"><i class="fas fa-3x fa-images" style="color:green"></i></a>
                                 </div>
                                 <div class="edit_posts_image" style="display: none;">
                                     <div class="input-group mt-4">
@@ -77,11 +78,19 @@
 
 
                         <div class="form-group row pt-3">
-                            <div class="h5">Description</div>
-                            <input type="text" name="description" id="description" value="{{(isset($data->description) && !empty($data->description))? $data->description : '' }}" class="form-control">
+                            <div class="h5">Post Description</div>
+                            <input type="text" name="description" id="description" value="{{(isset($data->description) && !empty($data->description))? $data->description : '' }}" class="form-control tiny">
                             @if ($errors->has('description'))
                             <strong>{{ $errors->first('description') }}</strong>
                             @endif
+                        </div>
+
+                        <div class="h5 row">Show Send Resume</div>
+                        <div class="form-group row pt-3">
+                            <label class="switch">
+                                <input type="checkbox" {{(isset($data) && $data->show_send_resume_button == 1)? 'checked':''}} name="show_send_resume_button" id="show_send_resume_button"  class="form-control">
+                                <span class="slider round"></span>
+                            </label>
                         </div>
 
                         @if(isset($data) && isset($data->random_id))
