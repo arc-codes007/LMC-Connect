@@ -18,7 +18,7 @@
               <i class="fas fa-lg fa-comment" id="comment_button" data-toggle="tooltip" data-placement="top" title="Add Comment"></i>
               <i class="fas fa-lg fa-paper-plane" id="upload_resume" data-toggle="tooltip" data-placement="top" title="Send Resume"></i>
               <i class="fas fa-lg fa-bookmark" data-toggle="tooltip" data-placement="top" title="Save Post"></i>
-              <i class="fas fa-lg fa-share-alt" data-toggle="tooltip" data-placement="top" title="Share Post"></i>
+              <i class="fas fa-lg fa-share-alt"  data-target="#exampleModal" data-toggle="modal" data-placement="top" title="Share Post"></i>
            </div>
         </div>
           <!-- Send Resume-->
@@ -59,6 +59,35 @@
 
          </div>      
       </div>
+
+
+<!-- Button trigger modal -->
+{{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Launch demo modal
+  </button> --}}
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="text" value="{{ url('posts/view/'.$post->random_id) }}">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
     </div>    
 
 

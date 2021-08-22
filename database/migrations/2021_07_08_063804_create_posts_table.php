@@ -20,6 +20,7 @@ class CreatePostsTable extends Migration
             $table->string('post_image')->nullable();
             $table->string('title')->nullable();
             $table->text('description')->nullable();
+            $table->text('department');
             $table->boolean('show_send_resume_button')->default(0);
             $table->softDeletesTz($column = 'deleted_at', $precision = 0);
             $table->timestamps();

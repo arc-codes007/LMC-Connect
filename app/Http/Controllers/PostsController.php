@@ -42,6 +42,14 @@ class PostsController extends Controller
             $post_data = $request->all();
 
             $posts = Posts::where('random_id', $id)->first();
+
+            if( isset($post_data['show_send_resume_button']) && !empty($post_data['show_send_resume_button']) && $post_data['show_send_resume_button'] = 'on'){
+                $posts->show_send_resume_button = 1;
+            }
+            elseif($post_data['show_send_resume_button'] = 'off'){
+                $posts->show_send_resume_button = 0;
+            }
+            
             if ($post_data['title'] != null) {
                 $posts->title = $post_data['title'];
             }
@@ -102,7 +110,16 @@ class PostsController extends Controller
         $posts = new Posts;
 
         $posts->user_id = $logged_in_user_details['id'];
+        $posts->department = $logged_in_user_details['department'];
 
+        if(isset($post_data['show_send_resume_button']) && !empty($post_data['show_send_resume_button']) && $post_data['show_send_resume_button'] = 'on'){
+            $posts->show_send_resume_button = 1;
+        }
+        elseif($post_data['show_send_resume_button'] = 'off'){
+            $posts->show_send_resume_button = 0;
+        }
+        
+        
         if ($post_imageName != '') {
             $posts->post_image = $post_imageName;
         }
@@ -115,7 +132,7 @@ class PostsController extends Controller
         if ($random_id != ' ') {
             $posts->random_id = $random_id;
         }
-
+        
 
         if ($posts->save()) {
             return redirect('/profile');
@@ -130,12 +147,7 @@ class PostsController extends Controller
         $postdata = $post->getAttributes();
         $showresume = $post['show_send_resume_button'];
         $username = User::find($post->user_id)->username;
-        $comment = Comments::where('user_id', '=', $postdata['user_id'])->where('post_id', '=', $postdata['id'])->get();
-        $commentcount = $comment->count('comment');
-        // $commentuser = User::where('id', $comment->user_id)->value('username');
-        // dd($commentuser);
-        return view('posts.view_post', ['post' => $post, 'username' => $username, 'comment' => $comment, 'commentcount' => $commentcount]);
-        exit();
+        return view('posts.view_post', ['post' => $post, 'username' => $username]);        
     }
 
     public function storecomment(Request $request)
@@ -146,7 +158,6 @@ class PostsController extends Controller
         ]);
 
         $data = $request->all();
-        // dd($data);
         $post = Posts::where('random_id', $data['random_id'])->first();
         $storecom = $post->getAttributes();
         $comment = new Comments;
@@ -155,7 +166,6 @@ class PostsController extends Controller
         if ($data['comment'] != null) {
             $comment->comment = $data['comment'];
         }
-        // dd($comment);
         if ($comment->save()) {
             return redirect('/posts/view/' . $data['random_id']);
         }
@@ -168,7 +178,6 @@ class PostsController extends Controller
         if (isset($id) && !empty($id)) {
             $data = Posts::where('random_id', $id)->first();
             $username = User::find($data->user_id)->username;
-            // $editdata = $data->getAttributes();
             return view('posts.create_edit_posts', ['data' => $data, 'username' => $username]);
         }
     }
