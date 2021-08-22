@@ -151,7 +151,15 @@ class PostsController extends Controller
         $postdata = $post->getAttributes();
         $showresume = $post['show_send_resume_button'];
         $username = User::find($post->user_id)->username;
-        return view('posts.view_post', ['post' => $post, 'username' => $username]);        
+        if(Auth::user()->id == $post->user_id || Auth::user()->is_admin == 1)
+        {
+            $valid_user = true;
+        }
+        else
+        {
+            $valid_user = false;
+        }
+        return view('posts.view_post', ['post' => $post, 'username' => $username ,'valid_user' => $valid_user]);        
     }
 
     public function storecomment(Request $request)
