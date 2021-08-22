@@ -65,7 +65,14 @@ class HomeController extends Controller
         foreach($posts as $post)
         {
             $username = User::find($post->user_id)->username;
-            $post_html_array[] = view('posts.view_block', ['post' => $post, 'username' => $username])->renderSections()['post'];        
+            if(Auth::user()->id == $post->user_id || Auth::user()->is_admin == 1){
+                $valid_user = true;
+            }
+            else
+            {
+                $valid_user = false;
+            }
+            $post_html_array[] = view('posts.view_block', ['post' => $post, 'username' => $username ,'valid_user' => $valid_user])->renderSections()['post'];        
         }
 
         return (new response($post_html_array,200));

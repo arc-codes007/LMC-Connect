@@ -33,6 +33,15 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    
+    <style>
+        .avatar {
+  vertical-align: middle;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+    </style>
 </head>
 <body>
     <div id="app">
@@ -53,6 +62,15 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
+                        <div class="dropdown navbar-left">
+                            <input class="form-control" placeholder="Search..." type="text" autocomplete="off"  id="autocomplete_search" />
+                              <div id="searchResults" class="bg-light w-100 py-2 dropdown-menu show">
+                                  <div class="border-bottom bg-light">
+                                    <img src="{{asset('images/profile_pics/default-profile-pic.jpg')}}" class="avatar m-2" alt="">
+                                     <span class="h5 strong">Arceus</span>
+                                  </div>
+                              </div>
+                         </div>
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))

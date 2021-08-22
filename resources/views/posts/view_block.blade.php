@@ -3,8 +3,11 @@
     <div class="card mb-4">
       <div class="card-header d-flex justify-content-between">
         <a href="{{ url('profile/'.$username) }}"><strong>{{$username}}</strong></a>
-          <p class="text-end">
-          <a href="{{url('posts/edit/'.$post->random_id)}}" class="text-dark"><i class="fas fa-lg fa-edit"></i></a>               
+        @if($valid_user)
+
+          <p class="text-end h5">
+          <a href="{{url('posts/edit/'.$post->random_id)}}" class="text-dark"><i class="fas fa-lg fa-edit"></i></a>
+          @endif               
       </div>
       <img src="{{ asset('images/posted_images/'.$username.'/'.$post->post_image) }}" class="card-img-top">
       <div class="card-body">
@@ -14,7 +17,9 @@
   
         <div class="row pt-3 d-flex justify-content-around">
           <a href="javascript:void(0);" onclick="add_comment_form_toggle({{$post->id}})" onmouseover="tooltip(this)" title="Add Comment" class="text-dark"><i class="fas fa-lg fa-comment"></i></a>
+          @if($post->show_send_resume_button == 1)
           <a href="javascript:void(0);" onclick="upload_resume()" onmouseover="tooltip(this)" title="Send Resume" class="text-dark"><i class="fas fa-lg fa-paper-plane"></i></a>
+          @endif
           <a href="javascript:void(0);" onmouseover="tooltip(this)" title="Save Post" class="text-dark"><i class="fas fa-lg fa-bookmark"></i></a>
           <a href="javascript:void(0);" onclick="share_post_modal()" onmouseover="tooltip(this)" title="Share Post" class="text-dark"><i class="fas fa-lg fa-share-alt"></i></a>
         </div>
