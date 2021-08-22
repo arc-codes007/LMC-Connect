@@ -77,4 +77,36 @@ class HomeController extends Controller
 
         return (new response($post_html_array,200));
     }
+
+    public function get_search_string(Request $request){
+        $request->validate([
+            'search_string' => 'required'
+        ]);
+
+        $get_data = $request->all();
+
+        $user_list = User::where('name','like',$get_data['search_string'].'%')->where('username','like',$get_data['search_string'].'%')->where('id','!=',Auth::user()->id)->get()->all();
+
+        if($user_list == null)
+        {
+            return (new response('No user found',204));            
+        }
+        $data = array();
+        foreach($user_list as $key=>$user)
+        {
+            $profile_pic = $user->profile()->get()->first();
+            if($profile_pic == null)
+            {
+                $data[$key]['profile_pic'] = null;
+            }
+            else
+            {
+                $data[$key]['profile_pic'] = $profile_pic->profile_pic;                
+            }
+            $data[$key]['name'] = $user->name;
+            $data[$key]['username'] = $user->username;
+        }
+
+        return (new response($data,200));
+    }
 }

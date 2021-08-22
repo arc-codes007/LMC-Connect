@@ -34,3 +34,5 @@ Route::middleware('auth:api')->post('/posts/comments', [App\Http\Controllers\Pos
 // Route::middleware('auth:api')->post('/posts/comments', function (Request $request) {
 //     dd($request->all());
 // })->name('storecomment');
+
+Route::middleware('auth:api')->get('/home/get_search_string', [App\Http\Controllers\HomeController::class, 'get_search_string'])->name('home.get_search_string');

@@ -39,7 +39,21 @@
   vertical-align: middle;
   width: 35px;
   height: 35px;
-  border-radius: 50%;
+  /* border-radius: 50%; */
+}
+
+.fancy-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+ 
+.fancy-scroll::-webkit-scrollbar-track {
+    background-color: #e4e4e4;
+    /* border-radius: 100px; */
+}
+ 
+.fancy-scroll::-webkit-scrollbar-thumb {
+    background-color: #343a40;
+    /* border-radius: 100px; */
 }
     </style>
 </head>
@@ -63,13 +77,10 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <div class="dropdown navbar-left">
-                            <input class="form-control" placeholder="Search..." type="text" autocomplete="off"  id="autocomplete_search" />
-                              <div id="searchResults" class="bg-light w-100 py-2 dropdown-menu show">
-                                  <div class="border-bottom bg-light">
-                                    <img src="{{asset('images/profile_pics/default-profile-pic.jpg')}}" class="avatar m-2" alt="">
-                                     <span class="h5 strong">Arceus</span>
-                                  </div>
-                              </div>
+                            <input class="form-control" id="search_bar" placeholder="Search..." type="text" autocomplete="off"  id="autocomplete_search" />
+                              <div id="searchResults" class="bg-light w-100 py-2 dropdown-menu show fancy-scroll" style="overflow-y: scroll; max-height:70vh">
+                                
+                            </div>                                    
                          </div>
                         <!-- Authentication Links -->
                         @guest
@@ -213,6 +224,51 @@ function view_all_comments(post_id)
 
 }
 
+$(document).ready(function(){
+
+    $('#search_bar').bind('input',function(){
+        var search_string = $(this).val();
+        if(search_string.length >= 2)
+        {
+            $.ajax({
+                url: "{{ route('home.get_search_string') }}",
+                type: "GET",
+                data: {
+                search_string : search_string,
+                },
+                success: function(res_data) {
+                    if(typeof res_data == 'object')
+                    {
+                        for(let user of res_data)
+                        {
+                            console.log(user);
+                            if(user.profile_pic == null)
+                            {
+                                $('#searchResults').append(`<div class="border-bottom bg-light">
+                                    <img src="{{asset('images/profile_pics/default-profile-pic.jpg')}}" class="avatar m-2" alt="">
+                                     <span class="h5 strong"><a href="route()")>Arceus</span>
+                                  </div>`);                                
+                            }
+                            else
+                            {
+                                $('#searchResults').append(`<div class="border-bottom bg-light">
+                                    <img src="{{asset('images/profile_pics/default-profile-pic.jpg')}}" class="avatar m-2" alt="">
+                                     <span class="h5 strong">Arceus</span>
+                                  </div>`);
+                            }
+                            $('#searchResults').html(`<div class="border-bottom bg-light">
+                                    <img src="{{asset('images/profile_pics/default-profile-pic.jpg')}}" class="avatar m-2" alt="">
+                                     <span class="h5 strong">Arceus</span>
+                                  </div>`);
+                        }   
+                    }
+                },
+                error: function(res_data) {
+                }
+            });
+        }
+    })
+});
 </script>
 </body>
 </html>
