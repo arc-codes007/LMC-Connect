@@ -58,3 +58,5 @@ Route::get('/user/saved_post', [App\Http\Controllers\PostsController::class, 'us
 // Route::post('/account/delete', function () {
 //     dd("sadawsd");
 // })->name('delete_account');
+
+Route::get('/admin-dashboard', [App\Http\Controllers\AdminController::class, 'index'])->name('admin-dashboard');
