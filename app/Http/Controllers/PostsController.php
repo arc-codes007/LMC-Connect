@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 
-use App\Models\Posts;
+use App\Models\Post;
 use App\Models\User;
 use App\Models\Comments;
 use App\Models\UserSavedPosts;
@@ -49,7 +49,7 @@ class PostsController extends Controller
 
             $post_data = $request->all();
 
-            $posts = Posts::where('random_id', $id)->first();
+            $posts = Post::where('random_id', $id)->first();
 
             if( isset($post_data['show_send_resume_button']) && !empty($post_data['show_send_resume_button']) && $post_data['show_send_resume_button'] = 'on'){
                 $posts->show_send_resume_button = 1;
@@ -115,7 +115,7 @@ class PostsController extends Controller
         $random_id =  substr(str_shuffle($permitchar), 0, 6);
 
 
-        $posts = new Posts;
+        $posts = new Post;
 
         $posts->user_id = $logged_in_user_details['id'];
         $posts->department = $logged_in_user_details['department'];
@@ -153,7 +153,7 @@ class PostsController extends Controller
         $user = Auth::user();
 
 
-        $post = Posts::where('random_id', '=', $post_random_id)->first();
+        $post = Post::where('random_id', '=', $post_random_id)->first();
         $post_owner_details = User::find($post->user_id);
         $post_owner_details->profile_pic = ($post_owner_details->profile()->first() != null)? $post_owner_details->profile()->first()->profile_pic:null;
         if($user->id == $post->user_id){
@@ -217,7 +217,7 @@ class PostsController extends Controller
 
         $data = $request->all();
         
-        $post = Posts::where('random_id', $data['random_id'])->first();
+        $post = Post::where('random_id', $data['random_id'])->first();
         if($post == null)
         {
             return (new response('Something went wrong',404));
@@ -254,7 +254,7 @@ class PostsController extends Controller
 
 
         if (isset($id) && !empty($id)) {
-            $data = Posts::where('random_id', $id)->first();
+            $data = Post::where('random_id', $id)->first();
             $username = User::find($data->user_id)->username;
             return view('posts.create_edit_posts', ['data' => $data, 'username' => $username]);
         }
@@ -298,8 +298,8 @@ class PostsController extends Controller
         {
             foreach($posts as $key => $post_id)
             {
-                $all_saved_posts[$key] = Posts::find($post_id->post_id);
-                $all_saved_posts[$key] = Posts::find($post_id->post_id);
+                $all_saved_posts[$key] = Post::find($post_id->post_id);
+                $all_saved_posts[$key] = Post::find($post_id->post_id);
                 $all_saved_posts[$key]->username = User::find($all_saved_posts[$key]->user_id)->username;
             }
         }
@@ -315,7 +315,7 @@ class PostsController extends Controller
     {
         $post_data = $request->all();
 
-        $post = Posts::find($post_data['post_id']);
+        $post = Post::find($post_data['post_id']);
 
         if(Auth::user()->id == $post->user_id || Auth::user()->is_admin)
         {

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Posts;
+use App\Models\Post;
 use App\Models\Resume;
 use App\Models\Notifications;
 use App\Models\User;
@@ -21,7 +21,7 @@ class ResumeController extends Controller
         ]);
 
         $post_data = $request->all();
-        $post = Posts::find($post_data['post_id']);
+        $post = Post::find($post_data['post_id']);
         $logged_in_user = Auth::user();
         $logged_in_user_details = $logged_in_user->getAttributes();
         $resume_name = '';

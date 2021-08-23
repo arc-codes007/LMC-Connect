@@ -10,6 +10,6 @@ class Comments extends Model
     use HasFactory;
     public function post()
     {
-        return $this->belongsTo(Posts::class);
+        return $this->belongsTo(Post::class);
     }
 }

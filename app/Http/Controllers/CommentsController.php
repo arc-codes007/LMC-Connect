@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Posts;
+use App\Models\Post;
 use App\Models\User;
 use App\Models\Comments;
 use Illuminate\Http\Response;

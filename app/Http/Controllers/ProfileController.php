@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\Models\User;
-use App\Models\Posts;
+use App\Models\Post;
 use Illuminate\Http\Response;
 use App\Models\Profile;
 use App\Models\SocialAccessRequests;
@@ -46,10 +46,10 @@ class ProfileController extends Controller
             $data['profile_details'] = $profile_details;
         }
 
-        if (empty($logged_in_user->posts()->get()->all())) {
+        if (empty($logged_in_user->post()->get()->all())) {
             $data['posts_details'] = array();
         } else {
-            $posts_details = $logged_in_user->posts()->get()->all();
+            $posts_details = $logged_in_user->post()->get()->all();
             $data['posts_data'] = $posts_details;
         }
 
@@ -289,10 +289,10 @@ class ProfileController extends Controller
             $data['profile_details'] = $profile_details;
         }
 
-        if (empty($user->posts()->get()->all())) {
+        if (empty($user->post()->get()->all())) {
             $data['posts_details'] = array();
         } else {
-            $posts_details = $user->posts()->get()->all();
+            $posts_details = $user->post()->get()->all();
             $data['posts_data'] = $posts_details;
         }
         

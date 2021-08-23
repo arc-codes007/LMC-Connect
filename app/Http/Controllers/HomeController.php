@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Posts;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Models\Profile;
 use App\Models\Notifications;
@@ -88,11 +88,11 @@ class HomeController extends Controller
 
         if($user->is_admin)
         {
-            $posts = Posts::orderBy('updated_at','DESC')->paginate(5);
+            $posts = Post::orderBy('updated_at','DESC')->paginate(5);
         }
         else
         {
-            $posts = Posts::where('department',$user->department)->orderBy('updated_at','DESC')->paginate(5);
+            $posts = Post::where('department',$user->department)->orderBy('updated_at','DESC')->paginate(5);
         }
         $post_html_array = array();
         foreach($posts as $post)

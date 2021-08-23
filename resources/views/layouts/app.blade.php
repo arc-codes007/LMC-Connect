@@ -96,6 +96,11 @@
                                     <a class="dropdown-item" href="{{ route('show_update_account_form',Auth::user()->username) }}">
                                         {{ __('Account Settings') }}
                                     </a>
+                                    @if (Auth::user()->is_admin)
+                                        <a class="dropdown-item" href="{{ route('admin_dashboard') }}">
+                                            {{ __('Admin Dashboard') }}
+                                        </a>                                        
+                                    @endif
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
