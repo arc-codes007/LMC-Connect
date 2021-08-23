@@ -11,7 +11,7 @@
     <meta name="auth-token" content="{{ Auth::user()->getAttributes()['api_token'] }}">
     @endauth
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'LMC Connect') }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
@@ -260,6 +260,30 @@ function save_unsave_post(e,post_id)
         }
     });
 
+}
+
+function delete_post(post_id) 
+{
+
+    
+  alertify.confirm('Confirmation', 'Are you sure? Post will be deleted forever.', function(){     
+    $.ajax({
+        url: "{{route('delete_post')}}",
+        type: "POST",
+        data:{
+            post_id:post_id
+        },
+        success: function(res_data) {
+            location.reload();
+        },
+        error: function(res_data) {
+            alertify.alert('Error', 'Something Went Wrong!');
+        }
+    });
+}
+  , 
+  function(){ });
+    
 }
 
 $(document).ready(function(){

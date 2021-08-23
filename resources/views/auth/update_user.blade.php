@@ -173,10 +173,12 @@ $(document).ready(function(){
     $('#delete_account_button').click(function(e){
         e.preventDefault();
 
-        alertify.confirm('Are you sure?', function(){ 
+        alertify.confirm('Confirmation', 'Are you sure?', function(){     
             $('#delete_account_form').submit();
-        });
-    });
+        }
+        , 
+        function(){ });
+            });
 
 });
 

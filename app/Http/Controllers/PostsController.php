@@ -298,4 +298,23 @@ class PostsController extends Controller
         return view('posts.user_saved_posts',$data);
     }
 
+    public function delete_post(Request $request)
+    {
+        $post_data = $request->all();
+
+        $post = Posts::find($post_data['post_id']);
+
+        if(Auth::user()->id == $post->user_id || Auth::user()->is_admin)
+        {
+            if($post->delete())
+            {
+                return (new response('Success',200));
+            }
+        }
+        else
+        {
+            return (new response('Unauthorized ',401));
+        }
+    }
+
 }
