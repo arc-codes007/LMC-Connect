@@ -224,7 +224,7 @@ class PostsController extends Controller
         $storecom = $post->getAttributes();
         $comment = new Comments;
         $comment->post_id = $storecom['id'];
-        $comment->user_id = $storecom['user_id'];
+        $comment->user_id = Auth::user()->id;
         if ($data['comment'] != null) 
         {
             $comment->comment = $data['comment'];
