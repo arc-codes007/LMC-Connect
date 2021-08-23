@@ -6,7 +6,9 @@ use App\Models\Posts;
 use Illuminate\Http\Request;
 use App\Models\Profile;
 use App\Models\Notifications;
+use App\Models\Resume;
 use App\Models\User;
+use App\Models\UserSavedPosts;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Response;
 
@@ -60,19 +62,71 @@ class HomeController extends Controller
     {        
         $user = Auth::user();
 
-        $posts = Posts::where('department',$user->department)->get()->all();
+        if($user->is_admin)
+        {
+            $posts = Posts::orderBy('updated_at','DESC')->paginate(5);
+        }
+        else
+        {
+            $posts = Posts::where('department',$user->department)->orderBy('updated_at','DESC')->paginate(5);
+        }
         $post_html_array = array();
         foreach($posts as $post)
         {
-            $username = User::find($post->user_id)->username;
-            if(Auth::user()->id == $post->user_id || Auth::user()->is_admin == 1){
-                $valid_user = true;
+            $post_owner_details = User::find($post->user_id);
+            $post_owner_details->profile_pic = ($post_owner_details->profile()->first() != null)? $post_owner_details->profile()->first()->profile_pic:null;
+            if($user->id == $post->user_id){
+                $post_owner = true;
             }
             else
             {
-                $valid_user = false;
+                $post_owner = FALSE;
+
             }
-            $post_html_array[] = view('posts.view_block', ['post' => $post, 'username' => $username ,'valid_user' => $valid_user])->renderSections()['post'];        
+
+            if($user->is_admin == 1)
+            {
+                $is_admin = true;
+            }
+            else
+            {
+                $is_admin = FALSE;
+
+            }
+
+            $data = array(
+                'post' => $post, 
+                'post_owner_details' => $post_owner_details ,
+                'post_owner' => $post_owner,
+                'is_admin' => $is_admin,
+            );
+
+            if($post->user_id == $user->id)
+            {
+                $resume = Resume::where('post_id',$post->id)->get()->all();
+                foreach($resume as $key=>$value)
+                {
+                    $resume[$key]->username = User::find($value->user_id)->username;
+                }   
+            }
+            else
+            {
+                $resume = Resume::where('post_id',$post->id)->where('user_id',$user->id)->get()->first();
+            }
+
+            if($resume != null)
+            {
+                $data['resume'] = $resume;
+            }
+
+            $is_post_saved_for_user = FALSE;
+            if(UserSavedPosts::where('user_id',$user->id)->where('post_id',$post->id)->count() > 0)
+            {
+                $is_post_saved_for_user = TRUE;
+            }
+            $data['is_post_saved_for_user'] = $is_post_saved_for_user;
+
+            $post_html_array[] = view('posts.view_block', $data)->renderSections()['post'];        
         }
 
         return (new response($post_html_array,200));
@@ -105,6 +159,7 @@ class HomeController extends Controller
             }
             $data[$key]['name'] = $user->name;
             $data[$key]['username'] = $user->username;
+            $data[$key]['url'] = route('profile.view_user',$user->username);
         }
 
         return (new response($data,200));

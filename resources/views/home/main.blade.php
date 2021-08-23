@@ -2,6 +2,15 @@
 
 @section('content')
 
+<div class="overlay">
+    <div class="overlayDoor"></div>
+    <div class="overlayContent">
+        <div class="loader">
+            <div class="inner"></div>
+        </div>
+    </div>
+</div>
+
 <div class="container">
     <div class="row">
         <div class="col-lg-3">
@@ -11,27 +20,33 @@
                         <img src="{{(isset($profile_details->profile_pic) && !empty($profile_details->profile_pic))? asset('images/profile_pics/'.$username.'/'.$profile_details->profile_pic) : asset('images/profile_pics/default-profile-pic.jpg')  }}" alt="Profile Picture" class="img-thumbnail w-75 rounded-circle">
                     </div>
                     <div class="row justify-content-center mt-4 h1">
-                        {{$name}}
+                        <a href="{{route('profile.view_user',$username)}}" class="text-dark">{{$name}}</a>
                     </div>
                     <div class="h4 mt-3">Bio</div>
                     <div>{{(isset($profile_details->bio) && !empty($profile_details->bio))? $profile_details->bio : 'N/A' }}</div>
                     <hr>
                     <div class="d-flex justify-content-between">
-                        <a href="" class="btn btn-primary">Saved Items</a>
+                        <a href="{{route('user_saved_posts')}}" class="btn btn-primary">Saved Posts</a>
                         <a href="{{ route('createpost') }}" class="btn btn-success">Add New Post</a>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-6" id="post_container">
-            
+        <div  class="col-lg-6">
+            <div id="post_container">
+                
+            </div>
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border" role="status" id="posts_loading_spinner" style="display: none">
+                  <span class="sr-only">Loading...</span>
+                </div>
+            </div>
         </div>
         <div class="col-lg-3">
             <div class="sticky-top">
-                <div class="border rounded  py-3 px-2"> 
-                    <div class="h2">Notifications</div>
-                    <hr>
-                    <div class="mt-2">
+                <div class="h2">Notifications</div>
+                <div class="border rounded py-3 px-2 fancy-scroll" style="max-height: 35vh; overflow-y : scroll"> 
+                    <div class="mt-1">
                         @if (isset($notifications) && !empty($notifications))
                         @foreach ($notifications as $notification)
                         @switch($notification['type'])
@@ -54,7 +69,19 @@
                         @endswitch
                         @endforeach
                         @else
-                        <div>No new notifications!</div>
+                            <div>No new notifications!</div>
+                        @endif
+                    </div>
+                </div>
+                <div class="h2 mt-4">Announcements</div>
+                <div class="border rounded py-3 px-2 fancy-scroll" style="max-height: 35vh; overflow-y : scroll"> 
+                    <div class="mt-1">
+                        @if (isset($announcements) && !empty($announcements))
+                        @foreach ($announcements as $announcement)
+
+                        @endforeach
+                        @else
+                            <div>No new announcements!</div>
                         @endif
                     </div>
                 </div>
@@ -65,7 +92,45 @@
 
 <script>
 
+var page = 1;
+
+function get_posts()
+{
+    $('#posts_loading_spinner').show();
+    $.ajax({
+        url: "{{ route('home.get_posts') }}",
+        type: "GET",
+        data: {
+            page : page
+        },
+        success: function(res_data) {
+            for(let post of res_data)
+            {
+                $('#post_container').append(post);
+            }
+            $('#posts_loading_spinner').hide();
+            if(page == 1)
+            {
+                $('.overlay, body').addClass('loaded');
+                    setTimeout(function() {
+                        $('.overlay').css({'display':'none'})
+                    }, 2000);
+            }
+            if(res_data.length == 0)
+            {
+                page = 'stop';
+            }
+        },
+        error: function(res_data) {
+            alertify.alert('Error', 'Something Went Wrong!');
+        }
+    });
+
+}
+
 $(document).ready(function(){
+
+    get_posts();
 
     $(window).scroll(function(){
         var height = $(window).scrollTop();
@@ -78,24 +143,18 @@ $(document).ready(function(){
             $('.sticky-top').css('padding-top','0rem');
 
         }
+        if(page != 'stop')
+        {
+            if(height + $(window).height() >= $(document).height()) 
+            {
+                page++;
+                get_posts();
+            }
+        }
+
 });
     
-    $.ajax({
-        url: "{{ route('home.get_posts') }}",
-        type: "GET",
-        data: {
-        },
-        success: function(res_data) {
-            for(let post of res_data)
-            {
-                $('#post_container').append(post);
-            }
-            console.log(res_data);
-        },
-        error: function(res_data) {
-            alertify.alert('Error', 'Something Went Wrong!');
-        }
-    });
+
 
     $('.accept_social_request').click(function(){
         var requested_by = $(this).data('requested_by');

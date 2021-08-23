@@ -5,12 +5,20 @@ tooltip = function(e)
 
 add_comment_form_toggle = function(post_id)
 {
+  if($(`#${post_id}_resume_form_toggle`).is(":visible"))
+  {
+    $(`#${post_id}_resume_form_toggle`).hide();
+  }
   $(`#${post_id}_add_comment`).toggle();
 }
 
-upload_resume = function() 
+upload_resume_button = function(post_id) 
 {
-  $('.upload_resume').toggle();                
+  if($(`#${post_id}_add_comment`).is(":visible"))
+  {
+    $(`#${post_id}_add_comment`).hide();
+  }
+  $(`#${post_id}_resume_form_toggle`).toggle();                
 }
 
 share_post_modal = function()

@@ -38,3 +38,8 @@ Route::middleware('auth:api')->post('/account/update/password', [App\Http\Contro
 // })->name('storecomment');
 
 Route::middleware('auth:api')->get('/home/get_search_string', [App\Http\Controllers\HomeController::class, 'get_search_string'])->name('home.get_search_string');
+
+Route::middleware('auth:api')->post('/posts/resume/upload', [App\Http\Controllers\ResumeController::class, 'save_resume'])->name('storeresume');
+
+Route::middleware('auth:api')->post('/post/save_unsave_for_user', [App\Http\Controllers\PostsController::class, 'save_unsave_post'])->name('save_unsave_post');
+

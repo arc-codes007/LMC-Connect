@@ -34,30 +34,8 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     
-    <style>
-        .avatar {
-  vertical-align: middle;
-  width: 35px;
-  height: 35px;
-  /* border-radius: 50%; */
-}
-
-.fancy-scroll::-webkit-scrollbar {
-    width: 8px;
-}
- 
-.fancy-scroll::-webkit-scrollbar-track {
-    background-color: #e4e4e4;
-    /* border-radius: 100px; */
-}
- 
-.fancy-scroll::-webkit-scrollbar-thumb {
-    background-color: #343a40;
-    /* border-radius: 100px; */
-}
-    </style>
 </head>
-<body>
+<body class="fancy-scroll" style="overflow-y: scroll">
     <div id="app">
         <nav class="navbar fixed-top navbar-expand-md navbar-dark bg-dark shadow-sm">
             <div class="container">
@@ -76,12 +54,15 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
+                        @auth
                         <div class="dropdown navbar-left">
                             <input class="form-control" id="search_bar" placeholder="Search..." type="text" autocomplete="off"  id="autocomplete_search" />
-                              <div id="searchResults" class="bg-light w-100 py-2 dropdown-menu show fancy-scroll" style="overflow-y: scroll; max-height:70vh">
+                              <div id="searchResults" class="bg-light w-100 py-2 dropdown-menu show fancy-scroll" style="overflow-y: scroll; max-height:70vh; display : none">
                                 
                             </div>                                    
-                         </div>
+                         </div>    
+                        @endauth
+                        
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
@@ -127,7 +108,6 @@
                 </div>
             </div>
         </nav>
-
         <main class="py-4 mt-5">
             @yield('content')
         </main>
@@ -159,6 +139,37 @@ function add_comment(post_id)
         error: function(res_data) {
             console.log(res_data);
                 alertify.alert('Error', 'Something Went Wrong!');
+        }
+    });
+}
+
+function upload_resume(post_id)
+{
+    form_id = post_id+"_upload_resume_form";
+
+    var form_data = new FormData(document.getElementById(form_id));
+    
+    $.ajax({
+        url: "{{route('storeresume')}}",
+        type: "POST",
+        data:form_data,
+        success: function(res_data) {
+            
+            $(`#${post_id}_resume_form_toggle`).html(`
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" disabled value="${res_data.resume}">
+                <div class="input-group-append">
+                  <a href="${res_data.download_url}" target="_BLANK" class="input-group-text btn bg-primary text-light"><i class="fas fa-file-download"  onmouseover="tooltip(this)" title="Download Resume"></i></a>
+                </div>
+            </div>
+            `);
+        },
+        cache: false,
+        contentType: false,
+        processData: false,
+        error: function(res_data) {
+            error = res_data.responseJSON['errors'];      
+            $(`#${post_id}_upload_resume_form_error`).html(`<strong>${error['resume'][0]}</strong>`);      
         }
     });
 }
@@ -224,9 +235,40 @@ function view_all_comments(post_id)
 
 }
 
+function save_unsave_post(e,post_id)
+{
+
+    $.ajax({
+        url: "{{route('save_unsave_post')}}",
+        type: "POST",
+        data:{
+            post_id:post_id
+        },
+        success: function(res_data) {
+            if(res_data == 'saved')
+            {
+                $(`#${post_id}_unsave_post`).show();
+                $(`#${post_id}_save_post`).hide();
+            }
+            else if(res_data == 'unsaved')
+            {
+                $(`#${post_id}_unsave_post`).hide();
+                $(`#${post_id}_save_post`).show();
+            }        
+        },
+        error: function(res_data) {
+        }
+    });
+
+}
+
 $(document).ready(function(){
 
     $('#search_bar').bind('input',function(){
+
+        $('#searchResults').hide();
+        $('#searchResults').html('');
+
         var search_string = $(this).val();
         if(search_string.length >= 2)
         {
@@ -239,27 +281,32 @@ $(document).ready(function(){
                 success: function(res_data) {
                     if(typeof res_data == 'object')
                     {
+                        $('#searchResults').show();
+                        var bottom_border = "";
+                        if(Object.keys(res_data).length > 1)
+                        {
+                            bottom_border = "border-bottom";
+                        }
                         for(let user of res_data)
                         {
-                            console.log(user);
                             if(user.profile_pic == null)
                             {
-                                $('#searchResults').append(`<div class="border-bottom bg-light">
+                                $('#searchResults').append(`<div class="${bottom_border} bg-light">
                                     <img src="{{asset('images/profile_pics/default-profile-pic.jpg')}}" class="avatar m-2" alt="">
-                                     <span class="h5 strong"><a href="route()")>Arceus</span>
+                                     <span class="h5 strong"><a href="${user.url}")>${user.name}</span>
                                   </div>`);                                
                             }
                             else
                             {
-                                $('#searchResults').append(`<div class="border-bottom bg-light">
-                                    <img src="{{asset('images/profile_pics/default-profile-pic.jpg')}}" class="avatar m-2" alt="">
-                                     <span class="h5 strong">Arceus</span>
+                                $('#searchResults').append(`<div class="${bottom_border} bg-light">
+                                    <img src="{{asset('images/profile_pics/${user.username}/${user.profile_pic}')}}" class="avatar m-2" alt="">
+                                     <span class="h5 strong"><a href="${user.url}")>${user.name}</span>
                                   </div>`);
                             }
-                            $('#searchResults').html(`<div class="border-bottom bg-light">
-                                    <img src="{{asset('images/profile_pics/default-profile-pic.jpg')}}" class="avatar m-2" alt="">
-                                     <span class="h5 strong">Arceus</span>
-                                  </div>`);
+                            // $('#searchResults').html(`<div class="border-bottom bg-light">
+                            //         <img src="{{asset('images/profile_pics/default-profile-pic.jpg')}}" class="avatar m-2" alt="">
+                            //          <span class="h5 strong">Arceus</span>
+                            //       </div>`);
                         }   
                     }
                 },

@@ -125,7 +125,7 @@
                 @foreach($posts_data as $posts)
                 <!-- @if(isset($posts) && !empty($posts)) -->
                 <div class=" col-4 pb-4 m-auto">
-                    <a href="{{ url('posts/view/'.$posts->random_id) }}">
+                    <a href="{{ route('post.show',$posts->random_id) }}">
                         <img class="card-img" src="{{ asset('images/posted_images/'.$username.'/'.$posts['post_image']) }}" alt="Somethimg went Wrong!">
                     </a>
                 </div>

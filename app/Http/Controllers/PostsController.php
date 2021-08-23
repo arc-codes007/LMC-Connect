@@ -6,6 +6,8 @@ namespace App\Http\Controllers;
 use App\Models\Posts;
 use App\Models\User;
 use App\Models\Comments;
+use App\Models\UserSavedPosts;
+use App\Models\Resume;
 use Illuminate\Http\Request;
 
 use Auth;
@@ -146,20 +148,62 @@ class PostsController extends Controller
 
     public function viewpost($post_random_id)
     {
+        $user = Auth::user();
+
 
         $post = Posts::where('random_id', '=', $post_random_id)->first();
-        $postdata = $post->getAttributes();
-        $showresume = $post['show_send_resume_button'];
-        $username = User::find($post->user_id)->username;
-        if(Auth::user()->id == $post->user_id || Auth::user()->is_admin == 1)
-        {
-            $valid_user = true;
+        $post_owner_details = User::find($post->user_id);
+        $post_owner_details->profile_pic = ($post_owner_details->profile()->first() != null)? $post_owner_details->profile()->first()->profile_pic:null;
+        if($user->id == $post->user_id){
+            $post_owner = true;
         }
         else
         {
-            $valid_user = false;
+            $post_owner = FALSE;
+
         }
-        return view('posts.view_post', ['post' => $post, 'username' => $username ,'valid_user' => $valid_user]);        
+
+        if($user->is_admin == 1)
+        {
+            $is_admin = true;
+        }
+        else
+        {
+            $is_admin = FALSE;
+
+        }
+
+        $data = array(
+            'post' => $post, 
+            'post_owner_details' => $post_owner_details ,
+            'post_owner' => $post_owner,
+            'is_admin' => $is_admin,
+        );
+        
+        if($post->user_id == $user->id)
+        {
+            $resume = Resume::where('post_id',$post->id)->get()->all();
+            foreach($resume as $key=>$value)
+            {
+                $resume[$key]->username = User::find($value->user_id)->username;
+            }   
+        }
+        else
+        {
+            $resume = Resume::where('post_id',$post->id)->where('user_id',$user->id)->get()->first();
+        }        if($resume != null)
+        {
+            $data['resume'] = $resume;
+        }
+
+        $is_post_saved_for_user = FALSE;
+        if(UserSavedPosts::where('user_id',$user->id)->where('post_id',$post->id)->count() > 0)
+        {
+            $is_post_saved_for_user = TRUE;
+        }
+        $data['is_post_saved_for_user'] = $is_post_saved_for_user;
+
+        return view('posts.view_post', $data);        
     }
 
     public function storecomment(Request $request)
@@ -202,4 +246,56 @@ class PostsController extends Controller
             return view('posts.create_edit_posts', ['data' => $data, 'username' => $username]);
         }
     }
+
+    public function save_unsave_post(Request $request)
+    {
+        $post_data = $request->all();
+        $logged_in_user_id = Auth::user()->id;
+
+        if(UserSavedPosts::where('user_id',$logged_in_user_id)->where('post_id',$post_data['post_id'])->count() > 0)
+        {
+            if(UserSavedPosts::where('user_id',$logged_in_user_id)->where('post_id',$post_data['post_id'])->delete())
+            {
+                return (new Response('unsaved',200));
+            }
+        }
+        else
+        {
+            $user_saved_post = new UserSavedPosts();
+            $user_saved_post->post_id = $post_data['post_id'];
+            $user_saved_post->user_id = $logged_in_user_id;
+
+            if($user_saved_post->save())
+            {
+                return (new Response('saved',200));
+            }
+        }
+
+    }
+
+    public function user_saved_posts()
+    {
+        $logged_in_user = Auth::user();
+
+        $all_saved_posts = array();
+
+        $posts = UserSavedPosts::where('user_id',$logged_in_user->id)->get()->all();
+        
+        if(!empty($posts))
+        {
+            foreach($posts as $key => $post_id)
+            {
+                $all_saved_posts[$key] = Posts::find($post_id->post_id);
+                $all_saved_posts[$key] = Posts::find($post_id->post_id);
+                $all_saved_posts[$key]->username = User::find($all_saved_posts[$key]->user_id)->username;
+            }
+        }
+
+        $data = array(
+            'all_saved_posts' => $all_saved_posts
+        );
+
+        return view('posts.user_saved_posts',$data);
+    }
+
 }
