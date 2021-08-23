@@ -6,7 +6,7 @@
         @if($valid_user)
 
           <p class="text-end h5">
-          <a href="{{url('posts/edit/'.$post->random_id)}}" class="text-dark"><i class="fas fa-lg fa-edit"></i></a>
+           <a href="{{url('posts/edit/'.$post->random_id)}}" class="text-dark"><i class="fas fa-lg fa-edit"></i></a>
           @endif               
       </div>
       <img src="{{ asset('images/posted_images/'.$username.'/'.$post->post_image) }}" class="card-img-top">
@@ -69,19 +69,18 @@
   <div class="modal fade" id="share_post_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
         <div class="modal-body">
-          <input type="text" value="{{ url('posts/view/'.$post->random_id) }}">
+          <div class="input-group">
+           <input type="text" id="{{$post->id}}_share_link" value="{{ route('post.show',$post->random_id) }} " class="form-control" disabled>
+            <div class="input-group-append">
+              <span class="input-group-text btn btn-outline-info" onclick="copy_to_clipboard('{{$post->id}}   _share_link')"><i class="far fa-lg fa-copy"></i></span>
+            </div>
+            <button type="button" class="close ml-2" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
+        
       </div>
     </div>
   </div>
