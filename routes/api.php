@@ -31,6 +31,8 @@ Route::middleware('auth:api')->get('/home/get_posts', [App\Http\Controllers\Home
 
 Route::middleware('auth:api')->post('/posts/comments', [App\Http\Controllers\PostsController::class, 'storecomment'])->name('storecomment');
 
+Route::middleware('auth:api')->post('/account/update/password', [App\Http\Controllers\Auth\UpdateUserController::class, 'update_account_password'])->name('update_account_password');
+
 // Route::middleware('auth:api')->post('/posts/comments', function (Request $request) {
 //     dd($request->all());
 // })->name('storecomment');
