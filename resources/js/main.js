@@ -32,3 +32,12 @@ hide_comments = function(post_id)
     $(`#${post_id}_hide_comments_btn`).hide();
     $(`#${post_id}_comment_accordion`).collapse('hide');
 }
+
+copy_to_clipboard = function(id) {
+  
+    var copyText = $(`#${id}`).val();
+    navigator.clipboard.writeText(copyText);
+
+    /* Alert the copied text */
+    alertify.notify("Copied!");
+}
