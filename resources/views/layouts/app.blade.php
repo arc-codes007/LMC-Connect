@@ -57,7 +57,7 @@
                         @auth
                         <div class="dropdown navbar-left">
                             <input class="form-control" id="search_bar" placeholder="Search..." type="text" autocomplete="off"  id="autocomplete_search" />
-                              <div id="searchResults" class="bg-light w-100 py-2 dropdown-menu show fancy-scroll" style="overflow-y: scroll; max-height:70vh; display : none">
+                              <div id="searchResults" class="bg-light w-100 py-2 dropdown-menu fancy-scroll" style="overflow-y: scroll; max-height:70vh;">
                                 
                             </div>                                    
                          </div>    
