@@ -43,3 +43,6 @@ Route::middleware('auth:api')->post('/posts/resume/upload', [App\Http\Controller
 
 Route::middleware('auth:api')->post('/post/save_unsave_for_user', [App\Http\Controllers\PostsController::class, 'save_unsave_post'])->name('save_unsave_post');
 
+Route::middleware('auth:api')->post('/post/delete', [App\Http\Controllers\PostsController::class, 'delete_post'])->name('delete_post');
+
+Route::middleware('auth:api')->post('/notification/delete', [App\Http\Controllers\HomeController::class, 'delete_notification'])->name('delete_notification');

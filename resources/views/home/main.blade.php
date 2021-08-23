@@ -46,7 +46,7 @@
             <div class="sticky-top">
                 <div class="h2">Notifications</div>
                 <div class="border rounded py-3 px-2 fancy-scroll" style="max-height: 35vh; overflow-y : scroll"> 
-                    <div class="mt-1">
+                    <div class="mt-1" id="notification_container">
                         @if (isset($notifications) && !empty($notifications))
                         @foreach ($notifications as $notification)
                         @switch($notification['type'])
@@ -55,14 +55,43 @@
                                     <h4 class="alert-heading h5">{{$notification['details']['title']}}</h4>
                                     
                                     <hr>
-                                    <div>User <a href="{{url('/profile/'.$notification['details']['requested_by_username'])}}">{{$notification['details']['requested_by_username']}}</a> wants to access your social links!</div>
+                                    <div>User <a href="{{route('profile.view_user',$notification['details']['requested_by_username'])}}">{{$notification['details']['requested_by_username']}}</a> wants to access your social links!</div>
                                     <hr>
                                     <div class="mb-0">
                                         <a class="btn btn-sm btn-success accept_social_request" data-notification_id = {{$notification['id']}} data-requested_by = {{$notification['details']['requested_by']}} data-requested_to = {{$notification['user_id']}}>Accept</a>
                                         <a href="" class="btn btn-sm btn-secondary decline_social_request" data-notification_id = {{$notification['id']}} data-requested_by = {{$notification['details']['requested_by']}} data-requested_to = {{$notification['user_id']}}>Decline</a>
                                     </div>
                                 </div>
-                                @break
+                            @break
+                            @case('comment')
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    <div>User <a href="{{route('profile.view_user',$notification['details']['comment_by_username'])}}">{{$notification['details']['comment_by_username']}}</a> commented on your post - <a href="{{route('post.show',$notification['details']['post_random_id'])}}">{{$notification['details']['post_title']}}</a>
+                                        <button type="button" onclick="delete_notification({{$notification['id']}})" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            @break
+                            @case('post_deleted_by_admin')
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        Your post with title - {{$notification['details']['post_title']}} has been deleted by Adminstration</a>
+                                        <button type="button" onclick="delete_notification({{$notification['id']}})" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                            @break
+
+                            @case('resume_recieved')
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                <div>User <a href="{{route('profile.view_user',$notification['details']['resume_sent_by_username'])}}">{{$notification['details']['resume_sent_by_username']}}</a> have sent resume on your post - <a href="{{route('post.show',$notification['details']['post_random_id'])}}">{{$notification['details']['post_title']}}</a>
+                                    <button type="button" onclick="delete_notification({{$notification['id']}})" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            </div>
+                            @break
                         
                             @default
                                 
@@ -91,6 +120,23 @@
 </div>
 
 <script>
+
+function delete_notification(notification_id)
+{
+    $.ajax({
+            url: "{{route('delete_notification')}}",
+            type: "POST",
+            data:{
+                notification_id:notification_id
+            },
+            success: function(res_data) {
+                $('#notification_container').html('No new notifications!');
+            },
+            error: function(res_data) {
+            }
+        });
+
+}
 
 var page = 1;
 

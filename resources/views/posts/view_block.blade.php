@@ -1,21 +1,21 @@
 @section('post')
 
-<div class="card mb-4">
-  <div class="card-header d-flex justify-content-between p-3">
+<div class="card mb-4 bottom-shadow">
+  <div class="card-header d-flex justify-content-between p-3 bg-white">
     <div>
       @if (isset($post_owner_details->profile_pic) && !empty($post_owner_details->profile_pic))
         <img src="{{asset('images/profile_pics/'.$post_owner_details->username.'/'.$post_owner_details->profile_pic)}}" class="avatar mx-1" alt="">
       @else
         <img src="{{asset('images/profile_pics/default-profile-pic.jpg')}}" class="avatar mx-1" alt="">
       @endif
-        <a href="{{ url('profile/'.$post_owner_details->username) }}" class="text-dark h5 mb-0 mx-1"><strong>{{$post_owner_details->username}}</strong></a>
+        <a href="{{ route('profile.view_user', $post_owner_details->username) }}" class="text-dark h5 mb-0 mx-1"><strong>{{$post_owner_details->username}}</strong></a>
     </div>
     <div class="d-flex align-items-center">  
-      @if($post_owner || $is_admin)
-        <a href="{{url('posts/edit/'.$post->random_id)}}" class="text-dark mx-1"><i class="fas fa-lg fa-edit mt-1"></i></a>
+      @if($post_owner)
+        <a href="{{route('editpost',$post->random_id)}}" class="text-dark mx-1"><i class="fas fa-lg fa-edit mt-1"></i></a>
       @endif               
-      @if ($post_owner)
-        <a href="{{url('posts/edit/'.$post->random_id)}}" class="text-danger mx-1"><i class="fas fa-lg fa-trash mt-1"></i></a>          
+      @if ($post_owner || $is_admin)
+          <a href="javascript:void(0)" onclick="delete_post({{$post->id}})" class="text-danger mx-1"><i class="fas fa-lg fa-trash mt-1"></i></a>
       @endif
     </div>
   </div>
@@ -50,13 +50,15 @@
                   </div>
                 </div>
               @endforeach
-            @elseif (isset($resume) && !empty($resume))
+            @elseif (isset($resume) && !empty($resume) && !$post_owner)
               <div class="input-group mb-3">
                 <input type="text" class="form-control" disabled value="{{$resume->resume}}">
                 <div class="input-group-append">
                   <a href="{{route('downloadresume',$resume->resume)}}" target="_BLANK" class="input-group-text btn bg-primary text-light"><i class="fas fa-file-download"  onmouseover="tooltip(this)" title="Download Resume"></i></a>
                 </div>
               </div>
+            @elseif($post_owner)
+              No Resume recieved yet!
             @else
               <form action="" method="POST" id="{{$post->id}}_upload_resume_form" files="true" enctype="multipart/form-data" onsubmit="event.preventDefault(); upload_resume({{$post->id}})">
                 <div class="input-group">

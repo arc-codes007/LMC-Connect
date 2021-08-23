@@ -3,7 +3,7 @@
 @section('content')
 
 <section id="home" style="height:100vh">
-    <div class="container-fluid h-50 d-flex align-items-center" style="background-image:linear-gradient(-45deg,#9BB1FF,#00A07C); margin-top: -1.1rem; background-attachment:fixed">
+    <div class="container-fluid h-50 d-flex align-items-center" style="background-image:linear-gradient(-45deg,#9BB1FF,#00A07C); margin-top: -1.1rem;">
         <div class="container py-3">
             <h1 class="display-1 text-white text-center">LMC-Connect</h1>
             <p class="text-center text-white h1">For the Students <br>From the Students</p>

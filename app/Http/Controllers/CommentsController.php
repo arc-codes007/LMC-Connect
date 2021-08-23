@@ -43,7 +43,7 @@ class CommentsController extends Controller
         {
             $comment_data[$key] = $comment->getAttributes();
             $user_id = $comment_data[$key]['user_id'];
-            $username = User::find($user_id)->get()->first()->username;
+            $username = User::find($user_id)->username;
             $comment_data[$key]['username'] = $username;
         }
 

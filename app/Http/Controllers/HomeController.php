@@ -46,9 +46,33 @@ class HomeController extends Controller
 
             foreach($all_notifications as $key=>$notification)
             {
-                $notifications[$key] = $notification->getAttributes();
-                $notifications[$key]['details'] = json_decode($notifications[$key]['details'],TRUE);
-                $notifications[$key]['details']['requested_by_username'] = User::find($notifications[$key]['details']['requested_by'])->username;
+                switch($notification->type)
+                {
+                    case 'social_access_request':
+                        $notifications[$key] = $notification->getAttributes();
+                        $notifications[$key]['details'] = json_decode($notifications[$key]['details'],TRUE);
+                        $notifications[$key]['details']['requested_by_username'] = User::find($notifications[$key]['details']['requested_by'])->username;
+                    break;
+
+                    case 'comment':
+                        $notifications[$key] = $notification->getAttributes();
+                        $notifications[$key]['details'] = json_decode($notifications[$key]['details'],TRUE);
+                        $notifications[$key]['details']['comment_by_username'] = User::find($notifications[$key]['details']['comment_by_id'])->username;
+                    break;
+
+                    case 'post_deleted_by_admin';
+                        $notifications[$key] = $notification->getAttributes();
+                        $notifications[$key]['details'] = json_decode($notifications[$key]['details'],TRUE);
+                        $notifications[$key]['details']['deleted_by_username'] = User::find($notifications[$key]['details']['deleted_by_id'])->username;
+                    break;
+
+                    case 'resume_recieved';
+                        $notifications[$key] = $notification->getAttributes();
+                        $notifications[$key]['details'] = json_decode($notifications[$key]['details'],TRUE);
+                        $notifications[$key]['details']['resume_sent_by_username'] = User::find($notifications[$key]['details']['resume_sent_by_id'])->username;
+                    break;
+
+                }
             }
 
             $data['notifications'] = $notifications;
@@ -163,5 +187,24 @@ class HomeController extends Controller
         }
 
         return (new response($data,200));
+    }
+
+    function delete_notification(Request $request)
+    {
+        $post_data = $request->all();
+
+        $notification = Notifications::find($post_data['notification_id']);
+
+        if(Auth::user()->id == $notification->user_id)
+        {
+            if($notification->delete())
+            {
+                return (new response('Success',200));
+            }
+        }
+        else
+        {
+            return (new response('Unauthorized ',401));
+        }
     }
 }
