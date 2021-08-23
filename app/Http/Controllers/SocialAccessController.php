@@ -8,7 +8,6 @@ use App\Models\User;
 use App\Models\SocialAccessRequests;
 use App\Models\Notifications;
 use Illuminate\Http\Response;
-use Illuminate\Notifications\Notification;
 
 class SocialAccessController extends Controller
 {
