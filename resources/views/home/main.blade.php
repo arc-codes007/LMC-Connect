@@ -107,7 +107,11 @@
                     <div class="mt-1">
                         @if (isset($announcements) && !empty($announcements))
                         @foreach ($announcements as $announcement)
-
+                            <a href="{{route('home.view_announcement',$announcement->random_id)}}">
+                                <div class="alert alert-dark" role="alert">
+                                    {{$announcement->subject}}
+                                </div>
+                            </a>
                         @endforeach
                         @else
                             <div>No new announcements!</div>

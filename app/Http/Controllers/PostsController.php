@@ -109,11 +109,12 @@ class PostsController extends Controller
             file_put_contents($imageFullPath, $image_base64);
         }
 
+        do 
+        {
+            $permitchar = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            $random_id =  substr(str_shuffle($permitchar), 0, 6);
 
-
-        $permitchar = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        $random_id =  substr(str_shuffle($permitchar), 0, 6);
-
+        } while (Post::where('random_id',$random_id)->count != 0);
 
         $posts = new Post;
 

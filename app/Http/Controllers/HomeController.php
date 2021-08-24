@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Annoucement;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Models\Profile;
@@ -86,6 +87,12 @@ class HomeController extends Controller
             $data['notifications'] = $notifications;
         }
 
+        if(Auth::user()->is_admin)
+            $announcements = Annoucement::get()->all();
+        else
+            $announcements = Annoucement::where('department',$user->department)->orWhere('department','All Departments')->get()->all();
+        if(!empty($announcements))
+            $data['announcements'] = $announcements;
 
         return view('home.main', $data);
     }
@@ -207,7 +214,7 @@ class HomeController extends Controller
         return (new response($data,200));
     }
 
-    function delete_notification(Request $request)
+    public function delete_notification(Request $request)
     {
         $post_data = $request->all();
 
@@ -224,5 +231,18 @@ class HomeController extends Controller
         {
             return (new response('Unauthorized ',401));
         }
+    }
+
+    public function view_announcement($announcement_random_id)
+    {
+        $announcement_data = Annoucement::where('random_id', $announcement_random_id)->get()->first();
+
+        if(empty($announcement_data))
+        {
+            abort(404);
+        }
+        
+        $data['announcement'] = $announcement_data;
+        return view('announcements.view_announcement',$data);
     }
 }

@@ -67,3 +67,13 @@ Route::get('/admin-dashboard/open_deleted_user_list', [App\Http\Controllers\Admi
 
 Route::get('/admin-dashboard/restore_user/{username}', [App\Http\Controllers\AdminController::class, 'restore_user'])->name('admin_panel.restore_user');
 
+Route::get('/admin-dashboard/make_announcement_form', [App\Http\Controllers\AdminController::class, 'make_announcement_form'])->name('admin_panel.make_announcement_form');
+
+Route::post('/admin-dashboard/save_announcement', [App\Http\Controllers\AdminController::class, 'save_announcement'])->name('admin_panel.save_announcement');
+
+Route::get('/home/view_announcement/{random_id}', [App\Http\Controllers\HomeController::class, 'view_announcement'])->name('home.view_announcement');
+
+
+
+
+

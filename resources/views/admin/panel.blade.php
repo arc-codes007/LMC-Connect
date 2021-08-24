@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="col-lg-5 text-center">
-            <a href="" class="btn btn-primary">Make Announcement</a>
+            <a href="{{route('admin_panel.make_announcement_form')}}" class="btn btn-primary">Make Announcement</a>
         </div>
     </div>
     <div class="py-3 my-3 mt-4 h3 text-center">Posts with most number of comments</div>

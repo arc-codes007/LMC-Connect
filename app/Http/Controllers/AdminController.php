@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Annoucement;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Post;
@@ -108,5 +109,51 @@ class AdminController extends Controller
         {
             abort(401);
         }
+    }
+
+    function make_announcement_form()
+    {
+        return view('admin.make_announcement_form');
+    }
+
+
+    function save_announcement(Request $request)
+    {
+        $request->validate([
+            'annoucement_department' => 'required',
+            'announcement_subject' => 'required',
+            'announcement_content' => 'required',
+        ]);
+
+        $post_data = $request->all();
+
+        if(Auth::user()->is_admin)
+        {
+
+            do
+            {
+                $permitchar = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                $random_id =  substr(str_shuffle($permitchar), 0, 6);
+            } while(Annoucement::where('random_id',$random_id)->count() != 0);
+
+            $annoucement = new Annoucement();
+
+            $annoucement->user_id = Auth::user()->id;
+            $annoucement->random_id = $random_id;
+            $annoucement->department = $post_data['annoucement_department'];
+            $annoucement->subject = $post_data['announcement_subject'];
+            $annoucement->content = $post_data['announcement_content'];
+
+            if($annoucement->save())
+            {
+                return redirect(route('admin_dashboard'));
+            }
+
+        }
+        else
+        {
+            abort(401);
+        }
+
     }
 }
