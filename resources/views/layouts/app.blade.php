@@ -311,6 +311,7 @@ $(document).ready(function(){
                 search_string : search_string,
                 },
                 success: function(res_data) {
+                    $('#searchResults').html('');
                     if(typeof res_data == 'object')
                     {
                         $('#searchResults').show();
@@ -325,7 +326,7 @@ $(document).ready(function(){
                             {
                                 $('#searchResults').append(`<div class="${bottom_border} bg-light">
                                     <img src="{{asset('images/profile_pics/default-profile-pic.png')}}" class="avatar m-2" alt="">
-                                     <span class="h5 strong"><a href="${user.url}")>${user.name}</span>
+                                     <span><a href="${user.url}")>${user.name}</span>
                                   </div>`);                                
                             }
                             else
