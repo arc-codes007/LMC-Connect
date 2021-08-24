@@ -324,7 +324,7 @@ $(document).ready(function(){
                             if(user.profile_pic == null)
                             {
                                 $('#searchResults').append(`<div class="${bottom_border} bg-light">
-                                    <img src="{{asset('images/profile_pics/default-profile-pic.jpg')}}" class="avatar m-2" alt="">
+                                    <img src="{{asset('images/profile_pics/default-profile-pic.png')}}" class="avatar m-2" alt="">
                                      <span class="h5 strong"><a href="${user.url}")>${user.name}</span>
                                   </div>`);                                
                             }
@@ -336,7 +336,7 @@ $(document).ready(function(){
                                   </div>`);
                             }
                             // $('#searchResults').html(`<div class="border-bottom bg-light">
-                            //         <img src="{{asset('images/profile_pics/default-profile-pic.jpg')}}" class="avatar m-2" alt="">
+                            //         <img src="{{asset('images/profile_pics/default-profile-pic.png')}}" class="avatar m-2" alt="">
                             //          <span class="h5 strong">Arceus</span>
                             //       </div>`);
                         }   

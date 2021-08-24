@@ -6,7 +6,7 @@
       @if (isset($post_owner_details->profile_pic) && !empty($post_owner_details->profile_pic))
         <img src="{{asset('images/profile_pics/'.$post_owner_details->username.'/'.$post_owner_details->profile_pic)}}" class="avatar mx-1" alt="">
       @else
-        <img src="{{asset('images/profile_pics/default-profile-pic.jpg')}}" class="avatar mx-1" alt="">
+        <img src="{{asset('images/profile_pics/default-profile-pic.png')}}" class="avatar mx-1" alt="">
       @endif
         <a href="{{ route('profile.view_user', $post_owner_details->username) }}" class="text-dark h5 mb-0 mx-1"><strong>{{$post_owner_details->username}}</strong></a>
     </div>

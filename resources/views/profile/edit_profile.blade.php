@@ -29,7 +29,7 @@
         <div class="col-md-3">
             <div id="upload-demo" class="edit_profile_pic" style="display: none;"></div>
             <div id="preview-crop-image" class="img_container">
-                <img src="{{(isset($profile_details['profile_pic']) && !empty($profile_details['profile_pic']))? asset('images/profile_pics/'.$username.'/'.$profile_details['profile_pic']) : asset('images/profile_pics/default-profile-pic.jpg')  }}" alt="" class="img-thumbnail w-100 rounded-circle">
+                <img src="{{(isset($profile_details['profile_pic']) && !empty($profile_details['profile_pic']))? asset('images/profile_pics/'.$username.'/'.$profile_details['profile_pic']) : asset('images/profile_pics/default-profile-pic.png')  }}" alt="" class="img-thumbnail w-100 rounded-circle">
                 <a id='edit_profile_pic' class="text-dark button w-100 h-100 text-center"><i class="fas fa-3x fa-camera"></i></a>
             </div>
             <div class="edit_profile_pic" style="display: none;">

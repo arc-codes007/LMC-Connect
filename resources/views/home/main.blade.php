@@ -17,9 +17,9 @@
             <div class="sticky-top">
                 <div class="border rounded  py-3 px-2"> 
                     <div class="row justify-content-center my-4">
-                        <img src="{{(isset($profile_details->profile_pic) && !empty($profile_details->profile_pic))? asset('images/profile_pics/'.$username.'/'.$profile_details->profile_pic) : asset('images/profile_pics/default-profile-pic.jpg')  }}" alt="Profile Picture" class="img-thumbnail w-75 rounded-circle">
+                        <img src="{{(isset($profile_details->profile_pic) && !empty($profile_details->profile_pic))? asset('images/profile_pics/'.$username.'/'.$profile_details->profile_pic) : asset('images/profile_pics/default-profile-pic.png')  }}" alt="Profile Picture" class="img-thumbnail w-75 rounded-circle">
                     </div>
-                    <div class="row justify-content-center mt-4 h1">
+                    <div class="row justify-content-center m-3 h1">
                         <a href="{{route('profile.view_user',$username)}}" class="text-dark">{{$name}}</a>
                     </div>
                     <div class="h4 mt-3">Bio</div>
