@@ -117,7 +117,7 @@
           <div class="input-group">
            <input type="text" id="{{$post->id}}_share_link" value="{{ route('post.show',$post->random_id) }} " class="form-control" disabled>
             <div class="input-group-append">
-              <span class="input-group-text btn btn-outline-info" onclick="copy_to_clipboard('{{$post->id}}   _share_link')"><i class="far fa-lg fa-copy"></i></span>
+              <span class="input-group-text btn btn-outline-info" onclick="copy_to_clipboard('{{$post->id}}_share_link')"><i class="far fa-lg fa-copy"></i></span>
             </div>
             <button type="button" class="close ml-2" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>

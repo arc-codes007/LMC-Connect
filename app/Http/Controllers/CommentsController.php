@@ -41,14 +41,21 @@ class CommentsController extends Controller
         $comment_data = array();
         foreach ($comment_collection as $key => $comment) 
         {
-            $comment_data[$key] = $comment->getAttributes();
-            $user_id = $comment_data[$key]['user_id'];
-            $username = User::find($user_id)->username;
+            $comment_details = $comment->getAttributes();
+            $user_commented = User::find($comment_details['user_id']);
+            if($user_commented == null) continue;
+
+            $comment_data[$key] = $comment_details;
+            $username = $user_commented->username;
             $comment_data[$key]['username'] = $username;
         }
 
+        if(empty($comment_data))
+        {
+            return (new Response('No Comments Found!',404));    
+        }
         $return_data = array(
-            'comment_count' => Comments::where('post_id', '=', $get_data['post_id'])->count(),
+            'comment_count' => count($comment_data),
             'comment_data' => $comment_data
         );
 
