@@ -63,3 +63,7 @@ Route::get('/admin-dashboard', [App\Http\Controllers\AdminController::class, 'in
 
 Route::get('/admin-dashboard/all_user_list', [App\Http\Controllers\AdminController::class, 'open_all_user_list'])->name('admin_panel.open_all_user_list');
 
+Route::get('/admin-dashboard/open_deleted_user_list', [App\Http\Controllers\AdminController::class, 'open_deleted_user_list'])->name('admin_panel.open_deleted_user_list');
+
+Route::get('/admin-dashboard/restore_user/{username}', [App\Http\Controllers\AdminController::class, 'restore_user'])->name('admin_panel.restore_user');
+

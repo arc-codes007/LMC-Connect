@@ -8,7 +8,7 @@ use App\Models\Post;
 use App\Models\Resume;
 use App\Models\UserSavedPosts;
 use Illuminate\Http\Response;
-
+use Auth;
 
 
 class AdminController extends Controller
@@ -25,6 +25,12 @@ class AdminController extends Controller
         
         foreach ($posts as $key=>$post) 
         {
+            $posted_by = User::find($post->user_id);
+            if($posted_by == null)
+            {
+               unset($posts[$key]);
+               continue; 
+            }
             $posts[$key]->posted_by_username = User::find($post->user_id)->username;
         }
 
@@ -60,5 +66,47 @@ class AdminController extends Controller
 
         return (new response($users_array,200));
 
+    }
+
+    public function open_deleted_user_list()
+    {
+        return view('admin.deleted_user_list');
+    }
+
+    public function get_deleted_users()
+    {
+
+        
+        $user = User::onlyTrashed()->paginate(10);
+        $users_array = array();
+
+        foreach($user as $key=>$value)
+        {
+            $users_array[$key]['name'] = $value->name;
+            $users_array[$key]['username'] = $value->username;
+            $users_array[$key]['department'] = $value->departmentame;
+            $users_array[$key]['restoring_url'] = route('admin_panel.restore_user',$value->username);
+        }
+
+        return (new response($users_array,200));
+
+        
+    }
+
+    function restore_user($username)
+    {
+        if(Auth::user()->is_admin)
+        {
+            $user = User::onlyTrashed()->where('username',$username);
+            
+            if($user->restore())
+            {
+                return redirect(route('admin_panel.open_deleted_user_list'));
+            }
+        }
+        else
+        {
+            abort(401);
+        }
     }
 }

@@ -24,11 +24,11 @@
             </div>
         </div>
         <div class="col-lg-5 text-center">
-            <a href="" class="btn btn-primary">Make Announcement</a>
+            <a href="{{route('admin_panel.open_deleted_user_list')}}" class="btn btn-primary">Restore Users</a>
         </div>
 
     </div>
-    <div class="row justify-content-between">
+    <div class="row justify-content-between align-items-center">
         <div class="card-body col-md-5 d-flex justify-content-center">
             <div class="mx-2 my-2">
                 <h4 class="card-text d-flex">
@@ -36,6 +36,9 @@
                     <div class="mx-2">{{count($posts)}} Posts</div>
                 </h4>
             </div>
+        </div>
+        <div class="col-lg-5 text-center">
+            <a href="" class="btn btn-primary">Make Announcement</a>
         </div>
     </div>
     <div class="py-3 my-3 mt-4 h3 text-center">Posts with most number of comments</div>

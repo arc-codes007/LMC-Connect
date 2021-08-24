@@ -48,3 +48,5 @@ Route::middleware('auth:api')->post('/post/delete', [App\Http\Controllers\PostsC
 Route::middleware('auth:api')->post('/notification/delete', [App\Http\Controllers\HomeController::class, 'delete_notification'])->name('delete_notification');
 
 Route::middleware('auth:api')->get('/admin-dashboard/get_users', [App\Http\Controllers\AdminController::class, 'get_users'])->name('admin_panel.get_users');
+
+Route::middleware('auth:api')->get('/admin-dashboard/get_deleted_users', [App\Http\Controllers\AdminController::class, 'get_deleted_users'])->name('admin_panel.get_deleted_users');

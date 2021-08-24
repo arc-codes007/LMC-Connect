@@ -3,7 +3,7 @@
 
 
 <div class="container">
-    <div class="h1 text-center">User List</div>
+    <div class="h1 text-center">Deleted User List</div>
     <hr>
     
     <table class="py-3 my-3 table table-striped">
@@ -16,16 +16,16 @@
             <th scope="col">Actions</th>  
           </tr>
         </thead>
-        <tbody id="user_list_table_body">
+        <tbody id="deleted_user_list_table_body">
     
         </tbody>   
 
     </table>
 
     <div class="mt-2 text-center">
-        <button class="btn btn-primary" id="load_more_users">Load More <i class="fas fa-lg fa-chevron-down mt-1"></i></button>
+        <button class="btn btn-primary" id="load_more_deleted_users">Load More <i class="fas fa-lg fa-chevron-down mt-1"></i></button>
         <div class="d-flex justify-content-center">
-            <div class="spinner-border" role="status" id="users_loading_spinner" style="display: none">
+            <div class="spinner-border" role="status" id="deleted_users_loading_spinner" style="display: none">
               <span class="sr-only">Loading...</span>
             </div>
         </div>
@@ -36,12 +36,12 @@
 
 var page = 1;
 
-function get_users()
+function get_deleted_users()
 {
-    $('#load_more_users').hide();
-    $('#users_loading_spinner').show();
+    $('#load_more_deleted_users').hide();
+    $('#deleted_users_loading_spinner').show();
     $.ajax({
-        url: "{{ route('admin_panel.get_users') }}",
+        url: "{{ route('admin_panel.get_deleted_users') }}",
         type: "GET",
         data: {
             page : page
@@ -50,24 +50,24 @@ function get_users()
             var count = 1;
             for(let user of res_data)
             {
-                $('#user_list_table_body').append(`
+                $('#deleted_user_list_table_body').append(`
                     <tr>
                         <th>${count}</th>
-                        <td><a href="${user.user_view_url}" class="text-dark">${user.name}</a></td>
-                        <td><a href="${user.user_view_url}" class="text-dark">${user.username}</a></td>
+                        <td>${user.name}</td>
+                        <td>${user.username}</td>
                         <td>${user.department}</td>
-                        <td><a href="${user.user_settings_url}" class="text-dark"><i class="fas fa-cog"></i></a></td>
+                        <td><a href="${user.restoring_url}" class="text-dark" onmouseover="tooltip(this)" title="Restore User"><i class="fas fa-undo"></i></a></td>
                     </tr>
                 `);
 
                 count++;
             }
-            $('#users_loading_spinner').hide();
-            $('#load_more_users').show();
+            $('#deleted_users_loading_spinner').hide();
+            $('#load_more_deleted_users').show();
 
             if(res_data.length == 0 || (page == 1 && res_data.length < 15) )
             {
-                $('#load_more_users').hide();
+                $('#load_more_deleted_users').hide();
                 page = 'stop';
             }
         },
@@ -80,9 +80,9 @@ function get_users()
 
 $(document).ready(function(){
 
-    get_users();
+    get_deleted_users();
 
-    $('#load_more_users').click(function(){
+    $('#load_more_deleted_users').click(function(){
         page++;
         get_users();
     });
