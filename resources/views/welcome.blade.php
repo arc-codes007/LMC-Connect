@@ -2,33 +2,32 @@
 
 @section('content')
 
-<section id="home" style="height:100vh">
-    <div class="container-fluid h-50 d-flex align-items-center" style="background-image:linear-gradient(-45deg,#9BB1FF,#00A07C); margin-top: -1.1rem;">
-        <div class="container py-3">
-            <h1 class="display-1 text-white text-center">LMC-Connect</h1>
-            <p class="text-center text-white h1">For the Students <br>From the Students</p>
+<section id="home" class="mb-4">
+    <div class="container-fluid  d-flex align-items-center mb-2" style="background-image:linear-gradient(-45deg,#9BB1FF,#00A07C); background-size: 100% 100%; margin-top: -1.1rem;">
+        <div class="container py-5">
+            <h1 class="display-1 text-white text-center pt-5">LMC-Connect</h1>
+            <div class="text-center text-white h1 pb-5">For the Students <br>From the Students</div>
         </div>
     </div>
-    <div class="container pt-2 border-bottom" id="about">
-        <div class="row justify-content-around">
-            <div class="col-lg-6 col-md-12 "><br>
-                <h2 class="text-center"><strong>About College</strong></h2>
-                <p class="text-left mb-2">
-                    <br>
+    <div class="container border-bottom my-4" id="about">
+        <div class="row justify-content-center mt-4">
+            <div class="col-lg-12 d-none d-lg-block my-3">
+                <img src="{{ asset('images/college_pic.webp.jpg') }}" class="rounded w-100" alt="image">
+            </div>
+            <div class="col-lg-12">
+                <div class="text-center my-3 h1"><strong>About College</strong></div>
+                <div class="text-left mb-2 h4">
                     Lachoo Memorial College of Science & Technology, a modest creation of the year 1965, has travelled an incredible journey of more than five decades.
                     For concepts savoured by visionary <strong>Shri Mathuradas Mathur</strong>, a connoisseur of higher education in science and technology,
                     this institution has come up synonymous with impeccable academic standards preferred for
                     pursuing multi-disciplinary graduate and post-graduate programmes in the field of
                     science, computers, pharmacy, bio-technolgy and management.
-                </p>
+                </div>
             </div><br>
-            <div class="col-lg-6 d-none d-lg-block mt-3">
-                <img src="{{ asset('images/college_pic.webp.jpg') }}" class="rounded img-fluid" alt="image">
-            </div>
         </div>
     </div>
 </section>
-<section id="features" class="col-lg-12  text-white border-bottom" style="background-image:linear-gradient(-45deg,#0A8DD3,#00A07C);">
+<section id="features" class="my-4 text-white border-bottom" style="background-image:linear-gradient(-45deg,#0A8DD3,#00A07C);">
     <div class="container py-3 mt-5 ">
         <h2 class="text-center pb-3"><strong>Why Choose Us ?</strong></h2>
         <div class="row text-center">
