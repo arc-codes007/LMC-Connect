@@ -49,27 +49,35 @@ class HomeController extends Controller
                 switch($notification->type)
                 {
                     case 'social_access_request':
-                        $notifications[$key] = $notification->getAttributes();
+                        $notification_data = $notification->getAttributes();
+                        $user_details = User::find(json_decode($notification_data['details'],TRUE)['requested_by']);
+                        if($user_details == null) break;
+                        $notifications[$key] = $notification_data;
                         $notifications[$key]['details'] = json_decode($notifications[$key]['details'],TRUE);
-                        $notifications[$key]['details']['requested_by_username'] = User::find($notifications[$key]['details']['requested_by'])->username;
+                        $notifications[$key]['details']['requested_by_username'] = $user_details->username;
                     break;
 
                     case 'comment':
-                        $notifications[$key] = $notification->getAttributes();
+                        $notification_data = $notification->getAttributes();
+                        $user_details = User::find(json_decode($notification_data['details'],TRUE)['comment_by_id']);
+                        if($user_details == null) break;
+                        $notifications[$key] = $notification_data;
                         $notifications[$key]['details'] = json_decode($notifications[$key]['details'],TRUE);
-                        $notifications[$key]['details']['comment_by_username'] = User::find($notifications[$key]['details']['comment_by_id'])->username;
+                        $notifications[$key]['details']['comment_by_username'] = $user_details->username;
                     break;
 
                     case 'post_deleted_by_admin';
                         $notifications[$key] = $notification->getAttributes();
                         $notifications[$key]['details'] = json_decode($notifications[$key]['details'],TRUE);
-                        $notifications[$key]['details']['deleted_by_username'] = User::find($notifications[$key]['details']['deleted_by_id'])->username;
                     break;
 
                     case 'resume_recieved';
-                        $notifications[$key] = $notification->getAttributes();
+                        $notification_data = $notification->getAttributes();
+                        $user_details = User::find(json_decode($notification_data['details'],TRUE)['resume_sent_by_id']);
+                        if($user_details == null) break;
+                        $notifications[$key] = $notification_data;
                         $notifications[$key]['details'] = json_decode($notifications[$key]['details'],TRUE);
-                        $notifications[$key]['details']['resume_sent_by_username'] = User::find($notifications[$key]['details']['resume_sent_by_id'])->username;
+                        $notifications[$key]['details']['resume_sent_by_username'] = $user_details->username;
                     break;
 
                 }
@@ -98,6 +106,10 @@ class HomeController extends Controller
         foreach($posts as $post)
         {
             $post_owner_details = User::find($post->user_id);
+            if($post_owner_details == null)
+            {
+                continue;
+            }
             $post_owner_details->profile_pic = ($post_owner_details->profile()->first() != null)? $post_owner_details->profile()->first()->profile_pic:null;
             if($user->id == $post->user_id){
                 $post_owner = true;
@@ -130,7 +142,13 @@ class HomeController extends Controller
                 $resume = Resume::where('post_id',$post->id)->get()->all();
                 foreach($resume as $key=>$value)
                 {
-                    $resume[$key]->username = User::find($value->user_id)->username;
+                    $resume_posted_by_user = User::find($value->user_id);
+                    if($resume_posted_by_user == null)
+                    {
+                        unset($resume[$key]);
+                        continue;
+                    }
+                    $resume[$key]->username = $resume_posted_by_user->username;
                 }   
             }
             else
