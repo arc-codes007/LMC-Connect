@@ -40,7 +40,7 @@ class HomeController extends Controller
         if(!empty($user->profile()->get()->all()))
             $data['profile_details'] = $user->profile()->get()->all()[0];
 
-        $all_notifications = $user->notifications()->get()->all(); 
+        $all_notifications = $user->notifications()->orderBy('updated_at','DESC')->get()->all(); 
         if(!empty($all_notifications))
         {
             $notifications = array();
@@ -88,9 +88,9 @@ class HomeController extends Controller
         }
 
         if(Auth::user()->is_admin)
-            $announcements = Annoucement::get()->all();
+            $announcements = Annoucement::orderBy('updated_at','DESC')->get()->all();
         else
-            $announcements = Annoucement::where('department',$user->department)->orWhere('department','All Departments')->get()->all();
+            $announcements = Annoucement::where('department',$user->department)->orWhere('department','All Departments')->orderBy('updated_at','DESC')->get()->all();
         if(!empty($announcements))
             $data['announcements'] = $announcements;
 
