@@ -13,7 +13,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-lg-3">
+        <div class="col-lg-3" id="profile_section">
             <div class="sticky-top">
                 <div class="border rounded  py-3 px-2"> 
                     <div class="row justify-content-center my-4">
@@ -32,7 +32,7 @@
                 </div>
             </div>
         </div>
-        <div  class="col-lg-6">
+        <div  class="col-lg-6" id="home_section">
             <div id="post_container">
                 
             </div>
@@ -42,7 +42,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-3">
+        <div class="col-lg-3" id="notification_section">
             <div class="sticky-top">
                 <div class="h2">Notifications</div>
                 <div class="border rounded py-3 px-2 fancy-scroll" style="max-height: 35vh; overflow-y : scroll"> 
@@ -78,7 +78,6 @@
                                         <button type="button" onclick="delete_notification({{$notification['id']}})" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                         </button>
-                                    </div>
                                 </div>
                                 
                             @break
@@ -122,7 +121,11 @@
         </div>
     </div>
 </div>
-
+<div class="footer fixed-bottom bg-dark d-flex justify-content-between d-lg-none" id="small_device_toggle_control">
+    <div class="text-center btn btn-dark w-100" id="small_device_button_profile"><i class="fas fa-lg fa-user"></i></div>
+    <div class="text-center btn btn-dark w-100" id="small_device_button_home"><i class="fas fa-lg fa-home"></i></div>
+    <div class="text-center btn btn-dark w-100" id="small_device_button_notifications"><i class="fas fa-lg fa-bell"></i></div>
+</div>
 <script>
 
 function delete_notification(notification_id)
@@ -178,7 +181,60 @@ function get_posts()
 
 }
 
+function small_device_buttons_toggle()
+{
+    if($('#small_device_toggle_control').is(':visible'))
+    {
+        $('#small_device_button_home').click();
+    }
+    else
+    {
+        $('#profile_section').show();   
+        $('#home_section').show();   
+        $('#notification_section').show();   
+    }
+
+}
+
 $(document).ready(function(){
+
+    $( window ).resize(function() {
+        small_device_buttons_toggle();
+    });
+
+    $('#small_device_button_profile').click(function()
+    {
+        $('#profile_section').show();   
+        $('#home_section').hide();   
+        $('#notification_section').hide();   
+
+        $('#small_device_button_profile').addClass('active');
+        $('#small_device_button_home').removeClass('active');
+        $('#small_device_button_notifications').removeClass('active');
+
+    });
+    $('#small_device_button_home').click(function()
+    {        
+        $('#home_section').show();   
+        $('#profile_section').hide();   
+        $('#notification_section').hide();   
+
+        $('#small_device_button_home').addClass('active');
+        $('#small_device_button_profile').removeClass('active');
+        $('#small_device_button_notifications').removeClass('active');
+
+    });
+    $('#small_device_button_notifications').click(function()
+    {
+        $('#notification_section').show();   
+        $('#profile_section').hide();   
+        $('#home_section').hide();   
+
+        $('#small_device_button_notifications').addClass('active');
+        $('#small_device_button_profile').removeClass('active');
+        $('#small_device_button_home').removeClass('active');
+
+    });
 
     get_posts();
 
@@ -202,7 +258,7 @@ $(document).ready(function(){
             }
         }
 
-});
+    });
     
 
 
