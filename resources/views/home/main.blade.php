@@ -198,6 +198,8 @@ function small_device_buttons_toggle()
 
 $(document).ready(function(){
 
+    small_device_buttons_toggle();
+    
     $( window ).resize(function() {
         small_device_buttons_toggle();
     });
