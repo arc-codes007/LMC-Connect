@@ -60,7 +60,7 @@ class AdminController extends Controller
         {
             $users_array[$key]['name'] = $value->name;
             $users_array[$key]['username'] = $value->username;
-            $users_array[$key]['department'] = $value->departmentame;
+            $users_array[$key]['department'] = $value->department;
             $users_array[$key]['user_view_url'] = route('profile.view_user',$value->username);
             $users_array[$key]['user_settings_url'] = route('show_update_account_form',$value->username);
         }
@@ -85,7 +85,7 @@ class AdminController extends Controller
         {
             $users_array[$key]['name'] = $value->name;
             $users_array[$key]['username'] = $value->username;
-            $users_array[$key]['department'] = $value->departmentame;
+            $users_array[$key]['department'] = $value->department;
             $users_array[$key]['restoring_url'] = route('admin_panel.restore_user',$value->username);
         }
 
