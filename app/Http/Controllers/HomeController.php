@@ -188,7 +188,7 @@ class HomeController extends Controller
 
         $get_data = $request->all();
 
-        $user_list = User::where('name','like',$get_data['search_string'].'%')->where('username','like',$get_data['search_string'].'%')->where('id','!=',Auth::user()->id)->get()->all();
+        $user_list = User::where('name','like',$get_data['search_string'].'%')->orWhere('username','like',$get_data['search_string'].'%')->where('id','!=',Auth::user()->id)->get()->all();
 
         if($user_list == null)
         {
