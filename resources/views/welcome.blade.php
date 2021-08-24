@@ -9,26 +9,27 @@
             <p class="text-center text-white h1">For the Students <br>From the Students</p>
         </div>
     </div>
-    <div class="container py-4 my-4 border-bottom" id="about">
+    <div class="container pt-2 border-bottom" id="about">
         <div class="row justify-content-around">
-            <div class="col-lg-6 col-md-12 col-sm-12">
+            <div class="col-lg-6 col-md-12 "><br>
                 <h2 class="text-center"><strong>About College</strong></h2>
-                <p class="text-left pt-5">
+                <p class="text-left mb-2">
+                    <br>
                     Lachoo Memorial College of Science & Technology, a modest creation of the year 1965, has travelled an incredible journey of more than five decades.
                     For concepts savoured by visionary <strong>Shri Mathuradas Mathur</strong>, a connoisseur of higher education in science and technology,
                     this institution has come up synonymous with impeccable academic standards preferred for
                     pursuing multi-disciplinary graduate and post-graduate programmes in the field of
                     science, computers, pharmacy, bio-technolgy and management.
                 </p>
-            </div>
-            <div class="col-md-6 d-none d-lg-block mt-5">
-                <img src="/img/cllg.webp.jpg" class="rounded img-fluid" alt="image">
+            </div><br>
+            <div class="col-lg-6 d-none d-lg-block mt-3">
+                <img src="{{ asset('images/college_pic.webp.jpg') }}" class="rounded img-fluid" alt="image">
             </div>
         </div>
     </div>
 </section>
-<section id="features" class="text-white" style="background-image:linear-gradient(-45deg,#0A8DD3,#00A07C);">
-    <div class="container px-4 pt-3 pb-4 border-bottom">
+<section id="features" class="col-lg-12  text-white border-bottom" style="background-image:linear-gradient(-45deg,#0A8DD3,#00A07C);">
+    <div class="container py-3 mt-5 ">
         <h2 class="text-center pb-3"><strong>Why Choose Us ?</strong></h2>
         <div class="row text-center">
             <div class="col-md-12">
