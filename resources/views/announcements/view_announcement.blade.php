@@ -6,7 +6,7 @@
     <hr>
         <div class="row justify-content-center mt-5">
             <div class="col-lg-8">
-                <div class="h3 mb-2">Select Deparment - </div>
+                <div class="h3 mb-2">Deparment - </div>
                 <div class="border h-100 d-flex align-items-center justify-content-center">
                     {{$announcement->department}}
                 </div>   
@@ -23,7 +23,7 @@
 
         <div class="row justify-content-center mt-5">
             <div class="col-lg-8">
-                <div class="h3 mb-2">Annoucement Content - </div>
+                <div class="h3 mb-2">Annoucement - </div>
                 <div class="border h-100 d-flex align-items-center justify-content-center">
                     {!! $announcement->content !!}
                 </div>
