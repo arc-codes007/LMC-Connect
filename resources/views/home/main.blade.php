@@ -198,7 +198,16 @@ function small_device_buttons_toggle()
 
 $(document).ready(function(){
 
-    small_device_buttons_toggle();
+    if($('#small_device_toggle_control').is(':visible'))
+    {
+        $('#home_section').show();   
+        $('#profile_section').hide();   
+        $('#notification_section').hide();   
+
+        $('#small_device_button_home').addClass('active');
+        $('#small_device_button_profile').removeClass('active');
+        $('#small_device_button_notifications').removeClass('active');
+    }    
     
     $( window ).resize(function() {
         small_device_buttons_toggle();
