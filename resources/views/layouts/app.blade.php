@@ -271,22 +271,21 @@ function delete_post(post_id)
 
     
   alertify.confirm('Confirmation', 'Are you sure? Post will be deleted forever.', function(){     
-    $.ajax({
-        url: "{{route('delete_post')}}",
-        type: "POST",
-        data:{
-            post_id:post_id
-        },
-        success: function(res_data) {
-            location.reload();
-        },
-        error: function(res_data) {
-            alertify.alert('Error', 'Something Went Wrong!');
-        }
-    });
-}
-  , 
-  function(){ });
+        $.ajax({
+            url: "{{route('delete_post')}}",
+            type: "POST",
+            data:{
+                post_id:post_id
+            },
+            success: function(res_data) {
+                location.reload();
+            },
+            error: function(res_data) {
+                alertify.alert('Error', 'Something Went Wrong!');
+            }
+        });
+    }, 
+    function(){ });
     
 }
 

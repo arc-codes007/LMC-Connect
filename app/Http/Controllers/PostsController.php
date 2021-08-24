@@ -9,6 +9,8 @@ use App\Models\Comments;
 use App\Models\UserSavedPosts;
 use App\Models\Resume;
 use Illuminate\Http\Request;
+use App\Models\Notifications;
+
 
 use Auth;
 use Session;
@@ -221,9 +223,8 @@ class PostsController extends Controller
             return (new response('Something went wrong',404));
         }
 
-        $storecom = $post->getAttributes();
         $comment = new Comments;
-        $comment->post_id = $storecom['id'];
+        $comment->post_id = $post->id;
         $comment->user_id = Auth::user()->id;
         if ($data['comment'] != null) 
         {
@@ -232,6 +233,18 @@ class PostsController extends Controller
 
         if ($comment->save()) 
         {
+            $notification = new Notifications;
+
+            $notification->user_id = $post->user_id;
+            $notification->type = 'comment';
+            $notification_data = array(
+                'post_id' => $post->id,
+                'post_title' => $post->title,
+                'post_random_id' => $post->random_id,
+                'comment_by_id' => Auth::user()->id
+            );
+            $notification->details = json_encode($notification_data);
+            $notification->save();
             return (new response('Success',201));
         }
     }
@@ -306,6 +319,19 @@ class PostsController extends Controller
 
         if(Auth::user()->id == $post->user_id || Auth::user()->is_admin)
         {
+            if(Auth::user()->is_admin && Auth::user()->id != $post->user_id)
+            {
+                $notification = new Notifications;
+
+                $notification->user_id = $post->user_id;
+                $notification->type = 'post_deleted_by_admin';
+                $notification_data = array(
+                    'post_title' => $post->title,
+                    'deleted_by_id' => Auth::user()->id
+                );
+                $notification->details = json_encode($notification_data);
+                $notification->save();
+            }
             if($post->delete())
             {
                 return (new response('Success',200));
