@@ -24,7 +24,7 @@
         <div class="row justify-content-center mt-5">
             <div class="col-lg-8">
                 <div class="h3 mb-2">Annoucement - </div>
-                <div class="border h-100 d-flex align-items-center justify-content-center">
+                <div class="border p-2 h-100">
                     {!! $announcement->content !!}
                 </div>
             </div>
