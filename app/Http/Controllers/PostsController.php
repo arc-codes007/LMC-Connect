@@ -234,18 +234,22 @@ class PostsController extends Controller
 
         if ($comment->save()) 
         {
-            $notification = new Notifications;
+            if($post->user_id != Auth::user()->id)
+            {
+                $notification = new Notifications;
 
-            $notification->user_id = $post->user_id;
-            $notification->type = 'comment';
-            $notification_data = array(
-                'post_id' => $post->id,
-                'post_title' => $post->title,
-                'post_random_id' => $post->random_id,
-                'comment_by_id' => Auth::user()->id
-            );
-            $notification->details = json_encode($notification_data);
-            $notification->save();
+                $notification->user_id = $post->user_id;
+                $notification->type = 'comment';
+                $notification_data = array(
+                    'post_id' => $post->id,
+                    'post_title' => $post->title,
+                    'post_random_id' => $post->random_id,
+                    'comment_by_id' => Auth::user()->id
+                );
+                $notification->details = json_encode($notification_data);
+                $notification->save();
+            }
+
             return (new response('Success',201));
         }
     }
