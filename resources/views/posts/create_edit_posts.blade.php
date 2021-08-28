@@ -36,7 +36,9 @@
                              <div class="h5">Post Title</div>
                              <input type="text" name="title" id="title" value="{{(isset($data->title) && !empty($data->title))? $data->title : '' }}" class="form-control">
                               @if ($errors->has('title'))
-                               <strong>{{ $errors->first('title') }}</strong>
+                               <span class="text-danger">
+                                <strong>{{ $errors->first('title') }}</strong>
+                               </span>
                               @endif
                             </div>
                         
@@ -62,14 +64,13 @@
                                             <input type="file" class="custom-file-input" name="post_image" id="post_image" aria-describedby="inputGroupFileimage">
                                             <input type="hidden" name="post_pic" id="post_pic" value="">
                                         </div>
-            
-            
-                                        @if ($errors->has('post_image'))
-                                        <strong>{{ $errors->first('post_image') }}</strong>
-                                        @endif
-                                    </div>
-            
+                                    </div>            
                                 </div>
+                                @if ($errors->has('post_image'))
+                                <span class="text-danger">
+                                    <strong>{{ $errors->first('post_image') }}</strong>
+                                </span>
+                                @endif
                             </div>
                                 
                             @endif
@@ -80,9 +81,6 @@
                         <div class="form-group row pt-3">
                             <div class="h5">Post Description</div>
                             <input type="text" name="description" id="description" value="{{(isset($data->description) && !empty($data->description))? $data->description : '' }}" class="form-control tiny">
-                            @if ($errors->has('description'))
-                            <strong>{{ $errors->first('description') }}</strong>
-                            @endif
                         </div>
 
                         <div class="h5 row">Show Send Resume</div>

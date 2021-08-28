@@ -44,7 +44,6 @@ class PostsController extends Controller
             $request->validate([
                 'title' => 'required',
                 'random_id' => 'required',
-                'description' => '',
             ]);
 
             $post_data = $request->all();
@@ -79,7 +78,6 @@ class PostsController extends Controller
         $request->validate([
             'title' => 'required',
             'post_image' => ['required', 'image'],
-            'description' => '',
         ]);
 
 
