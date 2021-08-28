@@ -100,7 +100,7 @@
 </section>
 <section id="footer" class="pt-4 pb-2 border-bottom">
     <div class="container">
-        <p class="text-center">Copyright @LMC | Designed for <a href="#" class="text-dark">LMC-Connect</a></p>
+        <p class="text-center">LMC Connect 	&#169; {{ date("Y") }} | Designed and Developed by Utkarsh, Yash, Yogesh and Vishnu</p>
     </div>
 </section>
 @endsection
